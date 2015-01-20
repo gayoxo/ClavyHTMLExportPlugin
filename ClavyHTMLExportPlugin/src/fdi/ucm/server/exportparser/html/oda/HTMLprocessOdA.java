@@ -20,11 +20,12 @@ public class HTMLprocessOdA extends HTMLprocess {
 	/**
 	 * @param listaDeDocumentos
 	 * @param salvar 
+	 * @param sOURCE_FOLDER 
 	 * @param b 
 	 * @param arrayList 
 	 */
-	public HTMLprocessOdA(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, ArrayList<Long> administradorList, boolean administrador) {
-		super(listaDeDocumentos,salvar);
+	public HTMLprocessOdA(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, ArrayList<Long> administradorList, boolean administrador) {
+		super(listaDeDocumentos,salvar,sOURCE_FOLDER);
 		AdministradorListaDocumentos=administradorList;
 		Administrador=administrador;
 	}
