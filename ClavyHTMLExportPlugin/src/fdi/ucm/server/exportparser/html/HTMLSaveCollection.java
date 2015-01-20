@@ -29,7 +29,7 @@ import fdi.ucm.server.modelComplete.collection.CompleteLogAndUpdates;
  */
 public class HTMLSaveCollection extends SaveCollection {
 
-	private static final String ODA = "HTML de datos";
+	private static final String ODA = "HTML of Data";
 	private ArrayList<ImportExportPair> Parametros;
 	private ArrayList<Long> ListaDeDocumentos;
 	private String Path;
@@ -124,7 +124,7 @@ public class HTMLSaveCollection extends SaveCollection {
 		if (Parametros==null)
 		{
 			ArrayList<ImportExportPair> ListaCampos=new ArrayList<ImportExportPair>();
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Number of Documents to export separated by ','"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Number of Documents ids to export separated by ','"));
 			Parametros=ListaCampos;
 			return ListaCampos;
 		}

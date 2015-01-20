@@ -183,7 +183,7 @@ public class HTMLprocess {
 		os.close();
 	}
 
-	protected String processST(CompleteStructure completeST,
+	private String processST(CompleteStructure completeST,
 			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
 		StringBuffer StringSalida=new StringBuffer();
 		boolean Vacio=true;
@@ -356,7 +356,7 @@ public class HTMLprocess {
 
 
 
-	private HashSet<Integer> calculaAmbitos(ArrayList<Integer> ambitos,
+	protected HashSet<Integer> calculaAmbitos(ArrayList<Integer> ambitos,
 			CompleteStructure completeST, CompleteDocuments completeDocuments) {
 		HashSet<Long> hijos=new HashSet<Long>();
 		calculaHijos(completeST,hijos);
@@ -380,7 +380,7 @@ public class HTMLprocess {
 		}
 	}
 
-	private CompleteElement findElem(CompleteStructure completeST, List<CompleteElement> description,
+	protected CompleteElement findElem(CompleteStructure completeST, List<CompleteElement> description,
 			ArrayList<Integer> ambitos) {
 		for (CompleteElement elementos : description) {
 			if (elementos.getHastype().getClavilenoid().equals(completeST.getClavilenoid())&&validos(elementos.getAmbitos(),ambitos))
