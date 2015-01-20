@@ -66,7 +66,7 @@ public class HTMLSaveCollection extends SaveCollection {
 			Dir.mkdirs();
 			
 			
-			HTMLprocess oda= new HTMLprocess(ListaDeDocumentos,Salvar,SOURCE_FOLDER);
+			HTMLprocess oda= new HTMLprocess(ListaDeDocumentos,Salvar,SOURCE_FOLDER,CL);
 			
 			
 			oda.preocess();
