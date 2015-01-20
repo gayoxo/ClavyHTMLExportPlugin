@@ -1,6 +1,6 @@
-package fdi.ucm.server.exportparser.html;
+package fdi.ucm.server.exportparser.html.oda;
 
-public class StaticNamesHTML {
+public class StaticNamesHTMLOdA {
 
 
 

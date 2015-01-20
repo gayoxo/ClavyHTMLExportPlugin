@@ -27,7 +27,7 @@ import fdi.ucm.server.modelComplete.collection.CompleteLogAndUpdates;
  * @author Joaquin Gayoso-Cabada
  *
  */
-public class HTMLSaveCollection extends SaveCollection {
+public class HTMLSaveCollectionOdA extends SaveCollection {
 
 	private static final String ODA = "HTML de datos OdA";
 	private ArrayList<ImportExportPair> Parametros;
@@ -44,7 +44,7 @@ public class HTMLSaveCollection extends SaveCollection {
 	/**
 	 * Constructor por defecto
 	 */
-		public HTMLSaveCollection() {
+		public HTMLSaveCollectionOdA() {
 	}
 
 	/* (non-Javadoc)
@@ -66,7 +66,7 @@ public class HTMLSaveCollection extends SaveCollection {
 			Dir.mkdirs();
 			
 			
-			HTMLprocess oda= new HTMLprocess(ListaDeDocumentos,new ArrayList<Long>(),true);
+			HTMLprocessOdA oda= new HTMLprocessOdA(ListaDeDocumentos,Salvar,new ArrayList<Long>(),true);
 			
 			
 			oda.preocess();

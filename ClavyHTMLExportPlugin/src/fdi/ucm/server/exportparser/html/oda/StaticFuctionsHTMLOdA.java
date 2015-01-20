@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fdi.ucm.server.exportparser.html;
+package fdi.ucm.server.exportparser.html.oda;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
  * @author Joaquin Gayoso-Cabada
  *
  */
-public class StaticFuctionsHTML {
+public class StaticFuctionsHTMLOdA {
 
 //	public static Integer findIdov(CompleteDocuments value) {
 //		for (CompleteElement elem : value.getDescription()) {
@@ -49,7 +49,7 @@ public class StaticFuctionsHTML {
 		for (CompleteOperationalView show : Shows) {
 			ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 			for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-				if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.VISIBLESHOWN))
+				if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.VISIBLESHOWN))
 					if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(true)))
 						return true;
 					else if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(false)))
@@ -72,7 +72,7 @@ public class StaticFuctionsHTML {
 		for (CompleteOperationalView show : Shows) {
 			ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 			for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-				if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.BROWSERSHOWN))
+				if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.BROWSERSHOWN))
 					if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(true)))
 						return true;
 					else if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(false)))
@@ -106,12 +106,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getViews();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.VIRTUAL_OBJECT)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.VIRTUAL_OBJECT)) 
 										return true;
 
 				}
@@ -203,12 +203,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getViews();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.FILE)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.FILE)) 
 										return true;
 				}
 			}
@@ -227,12 +227,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.FILERESOURCE)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.FILERESOURCE)) 
 										return true;
 
 				}
@@ -251,12 +251,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.IDOV_OWNER)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.IDOV_OWNER)) 
 										return true;
 				}
 			}
@@ -274,12 +274,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.METADATOS)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.METADATOS)) 
 										return true;
 
 				}
@@ -298,12 +298,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.DATOS)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.DATOS)) 
 										return true;
 
 				}
@@ -322,12 +322,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.RESOURCE)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.RESOURCE)) 
 										return true;
 				}
 			}
@@ -347,11 +347,11 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.ODA))
+			if (show.getName().equals(StaticNamesHTMLOdA.ODA))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.EXTENSIBLE))
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.EXTENSIBLE))
 						if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(true)))
 							return true;
 						else if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(false)))
@@ -374,7 +374,7 @@ public class StaticFuctionsHTML {
 				{
 				ArrayList<CompleteOperationalValue> ShowsInst = objetoDigital.getViewsValues();
 				for (CompleteOperationalValue show : ShowsInst) {
-					if (show.getType().getView().getName().equals(StaticNamesHTML.ODA)&&show.getType().getName().equals(StaticNamesHTML.PUBLIC))
+					if (show.getType().getView().getName().equals(StaticNamesHTMLOdA.ODA)&&show.getType().getName().equals(StaticNamesHTMLOdA.PUBLIC))
 						if (show.getValue().equals(Boolean.toString(true)))
 							return true;
 						else if (show.getValue().equals(Boolean.toString(false)))
@@ -383,11 +383,11 @@ public class StaticFuctionsHTML {
 				
 				ArrayList<CompleteOperationalView> Shows = objetoDigital.getDocument().getViews();
 				for (CompleteOperationalView show : Shows) {
-					if (show.getName().equals(StaticNamesHTML.ODA))
+					if (show.getName().equals(StaticNamesHTMLOdA.ODA))
 					{
 					ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 					for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-						if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.PUBLIC))
+						if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.PUBLIC))
 							if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(true)))
 									return true;
 							else if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(false)))
@@ -418,7 +418,7 @@ public class StaticFuctionsHTML {
 				{
 			ArrayList<CompleteOperationalValue> ShowsInst = objetoDigital.getViewsValues();
 				for (CompleteOperationalValue show : ShowsInst) {
-					if (show.getType().getView().getName().equals(StaticNamesHTML.ODA)&&show.getType().getName().equals(StaticNamesHTML.PRIVATE))
+					if (show.getType().getView().getName().equals(StaticNamesHTMLOdA.ODA)&&show.getType().getName().equals(StaticNamesHTMLOdA.PRIVATE))
 						if (show.getValue().equals(Boolean.toString(true)))
 							return true;
 						else if (show.getValue().equals(Boolean.toString(false)))
@@ -427,11 +427,11 @@ public class StaticFuctionsHTML {
 				
 				ArrayList<CompleteOperationalView> Shows = objetoDigital.getDocument().getViews();
 				for (CompleteOperationalView show : Shows) {
-					if (show.getName().equals(StaticNamesHTML.ODA))
+					if (show.getName().equals(StaticNamesHTMLOdA.ODA))
 					{
 					ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 					for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-						if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.PRIVATE))
+						if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.PRIVATE))
 							if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(true)))
 								return true;
 							else if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(false)))
@@ -461,7 +461,7 @@ public class StaticFuctionsHTML {
 		
 		ArrayList<CompleteOperationalValue> ShowsInst = elem.getShows();
 		for (CompleteOperationalValue show : ShowsInst) {
-			if (show.getType().getName().equals(StaticNamesHTML.VISIBLESHOWN))
+			if (show.getType().getName().equals(StaticNamesHTMLOdA.VISIBLESHOWN))
 				if (show.getValue().equals(Boolean.toString(true)))
 					return true;
 				else if (show.getValue().equals(Boolean.toString(false)))
@@ -472,7 +472,7 @@ public class StaticFuctionsHTML {
 		for (CompleteOperationalView show : Shows) {
 			ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 			for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-				if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.VISIBLESHOWN))
+				if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.VISIBLESHOWN))
 					if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(true)))
 							return true;
 					else if (CompleteOperationalValueType.getDefault().equals(Boolean.toString(false)))
@@ -491,7 +491,7 @@ public class StaticFuctionsHTML {
 	public static CompleteResourceElement findMetaValueFile(
 			List<CompleteElement> description) {
 		for (CompleteElement completeElement : description) {
-			if (completeElement instanceof CompleteResourceElement&&StaticFuctionsHTML.isFileFisico(completeElement.getHastype()))
+			if (completeElement instanceof CompleteResourceElement&&StaticFuctionsHTMLOdA.isFileFisico(completeElement.getHastype()))
 				return (CompleteResourceElement) completeElement;
 		}
 		return null;
@@ -505,7 +505,7 @@ public class StaticFuctionsHTML {
 	public static CompleteLinkElement findMetaValueIDOVowner(
 			List<CompleteElement> description) {
 		for (CompleteElement completeElement : description) {
-			if (completeElement instanceof CompleteLinkElement&&StaticFuctionsHTML.isOwner(completeElement.getHastype()))
+			if (completeElement instanceof CompleteLinkElement&&StaticFuctionsHTMLOdA.isOwner(completeElement.getHastype()))
 				return (CompleteLinkElement) completeElement;
 		}
 		return null;
@@ -525,12 +525,12 @@ public class StaticFuctionsHTML {
 	public static boolean isNumeric(CompleteElementType hastype) {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {	
-			if (show.getName().equals(StaticNamesHTML.METATYPE))
+			if (show.getName().equals(StaticNamesHTMLOdA.METATYPE))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType showValues : ShowValue) {
-					if (showValues.getName().equals(StaticNamesHTML.METATYPETYPE))
-							if (showValues.getDefault().equals(StaticNamesHTML.NUMERIC)) 
+					if (showValues.getName().equals(StaticNamesHTMLOdA.METATYPETYPE))
+							if (showValues.getDefault().equals(StaticNamesHTMLOdA.NUMERIC)) 
 										return true;
 				}
 			}
@@ -548,8 +548,8 @@ public class StaticFuctionsHTML {
 	public static boolean isNumeric(CompleteElement elem) {
 		ArrayList<CompleteOperationalValue> ShowsInst = elem.getShows();
 		for (CompleteOperationalValue show : ShowsInst) {
-			if (show.getType().getView().getName().equals(StaticNamesHTML.METATYPE)&&show.getType().getName().equals(StaticNamesHTML.METATYPETYPE))
-				if (show.getValue().equals(StaticNamesHTML.NUMERIC))
+			if (show.getType().getView().getName().equals(StaticNamesHTMLOdA.METATYPE)&&show.getType().getName().equals(StaticNamesHTMLOdA.METATYPETYPE))
+				if (show.getValue().equals(StaticNamesHTMLOdA.NUMERIC))
 					return true;
 		}
 		
@@ -567,12 +567,12 @@ public class StaticFuctionsHTML {
 	public static boolean isDate(CompleteElementType attribute) {
 		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
 		for (CompleteOperationalView show : Shows) {	
-			if (show.getName().equals(StaticNamesHTML.METATYPE))
+			if (show.getName().equals(StaticNamesHTMLOdA.METATYPE))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType showValues : ShowValue) {
-					if (showValues.getName().equals(StaticNamesHTML.METATYPETYPE))
-							if (showValues.getDefault().equals(StaticNamesHTML.DATE)) 
+					if (showValues.getName().equals(StaticNamesHTMLOdA.METATYPETYPE))
+							if (showValues.getDefault().equals(StaticNamesHTMLOdA.DATE)) 
 										return true;
 				}
 			}
@@ -590,11 +590,11 @@ public class StaticFuctionsHTML {
 	public static Integer getVocNumber(CompleteTextElementType attribute) {
 		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
 		for (CompleteOperationalView show : Shows) {	
-			if (show.getName().equals(StaticNamesHTML.VOCABULARY))
+			if (show.getName().equals(StaticNamesHTMLOdA.VOCABULARY))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType showValues : ShowValue) {
-					if (showValues.getName().equals(StaticNamesHTML.VOCNUMBER))
+					if (showValues.getName().equals(StaticNamesHTMLOdA.VOCNUMBER))
 						try {
 							return Integer.parseInt(showValues.getDefault());
 						} catch (Exception e) {
@@ -612,11 +612,11 @@ public class StaticFuctionsHTML {
 	public static Boolean getVocCompartido(CompleteTextElementType attribute) {
 		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
 		for (CompleteOperationalView show : Shows) {	
-			if (show.getName().equals(StaticNamesHTML.VOCABULARY))
+			if (show.getName().equals(StaticNamesHTMLOdA.VOCABULARY))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType showValues : ShowValue) {
-					if (showValues.getName().equals(StaticNamesHTML.COMPARTIDO))
+					if (showValues.getName().equals(StaticNamesHTMLOdA.COMPARTIDO))
 						try {
 							return Boolean.parseBoolean(showValues.getDefault());
 						} catch (Exception e) {
@@ -640,12 +640,12 @@ public class StaticFuctionsHTML {
 	public static boolean isControled(CompleteElementType hastype) {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {	
-			if (show.getName().equals(StaticNamesHTML.METATYPE))
+			if (show.getName().equals(StaticNamesHTMLOdA.METATYPE))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType showValues : ShowValue) {
-					if (showValues.getName().equals(StaticNamesHTML.METATYPETYPE))
-							if (showValues.getDefault().equals(StaticNamesHTML.CONTROLED)) 
+					if (showValues.getName().equals(StaticNamesHTMLOdA.METATYPETYPE))
+							if (showValues.getDefault().equals(StaticNamesHTMLOdA.CONTROLED)) 
 										return true;
 				}
 			}
@@ -667,12 +667,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = document.getViews();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.URL)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.URL)) 
 										return true;
 				}
 			}
@@ -685,7 +685,7 @@ public class StaticFuctionsHTML {
 	public static CompleteResourceElement findMetaValueUri(
 			List<CompleteElement> description) {
 		for (CompleteElement completeElement : description) {
-			if (completeElement instanceof CompleteResourceElement&&StaticFuctionsHTML.isURI(completeElement.getHastype()))
+			if (completeElement instanceof CompleteResourceElement&&StaticFuctionsHTMLOdA.isURI(completeElement.getHastype()))
 				return (CompleteResourceElement) completeElement;
 		}
 		return null;
@@ -702,12 +702,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.URI)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.URI)) 
 										return true;
 
 				}
@@ -722,11 +722,11 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.PRESNTACION))
+			if (show.getName().equals(StaticNamesHTMLOdA.PRESNTACION))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.OdaID))
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.OdaID))
 						try {
 							Integer I=Integer.parseInt(CompleteOperationalValueType.getDefault());
 								return I;
@@ -748,12 +748,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.IDOV)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.IDOV)) 
 										return true;
 
 				}
@@ -769,12 +769,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.PRESNTACION))
+			if (show.getName().equals(StaticNamesHTMLOdA.PRESNTACION))
 			{
 				boolean found=false;
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.OdaID))
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.OdaID))
 						try {
 							Integer.parseInt(CompleteOperationalValueType.getDefault());
 								found=true;
@@ -786,7 +786,7 @@ public class StaticFuctionsHTML {
 				}
 				
 				if (!found)
-					show.getValues().add(new CompleteOperationalValueType(StaticNamesHTML.OdaID, Integer.toString(IdovNuevo), show));
+					show.getValues().add(new CompleteOperationalValueType(StaticNamesHTMLOdA.OdaID, Integer.toString(IdovNuevo), show));
 			}
 		}
 	}
@@ -797,12 +797,12 @@ public class StaticFuctionsHTML {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesHTML.META))
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
-					if (CompleteOperationalValueType.getName().equals(StaticNamesHTML.TYPE))
-						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTML.IGNORED)) 
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesHTMLOdA.IGNORED)) 
 										return true;
 
 				}
