@@ -41,11 +41,11 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 public class HTMLprocess {
 
 	protected static final String EXPORTTEXT = "Export HTML RESULT";
-	private ArrayList<Long> ListaDeDocumentos;
-	private CompleteCollection Salvar;
-	private String SOURCE_FOLDER;
-	private StringBuffer CodigoHTML;
-	private CompleteLogAndUpdates CL;
+	protected ArrayList<Long> ListaDeDocumentos;
+	protected CompleteCollection Salvar;
+	protected String SOURCE_FOLDER;
+	protected StringBuffer CodigoHTML;
+	protected CompleteLogAndUpdates CL;
 
 	public HTMLprocess(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL) {
 		ListaDeDocumentos=listaDeDocumentos;
@@ -166,7 +166,7 @@ public class HTMLprocess {
 	 * @param destinationFile
 	 * @throws IOException
 	 */
-	private void saveImage(URL imageUrl, String destinationFile) throws IOException {
+	protected void saveImage(URL imageUrl, String destinationFile) throws IOException {
 
 		URL url = imageUrl;
 		InputStream is = url.openStream();
@@ -183,7 +183,7 @@ public class HTMLprocess {
 		os.close();
 	}
 
-	private String processST(CompleteStructure completeST,
+	protected String processST(CompleteStructure completeST,
 			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
 		StringBuffer StringSalida=new StringBuffer();
 		boolean Vacio=true;
