@@ -19,14 +19,15 @@ import fdi.ucm.server.modelComplete.collection.CompleteCollection;
 import fdi.ucm.server.modelComplete.collection.CompleteLogAndUpdates;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
-import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
 import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
+import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementFile;
 import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementURL;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
@@ -200,6 +201,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 							
 							StringBuffer Hijos=new StringBuffer();
 
+
 								String result2 = processSTRecursos(completeST, completeDocuments, ambitosNuevos);
 								
 								if (!result2.isEmpty())
@@ -214,10 +216,19 @@ public class HTMLprocessOdA extends HTMLprocess {
 
 							}
 						}
-						Salida = StringSalida.toString();
+						String ST = StringSalida.toString();
+						StringBuffer StringSalidaFinal = new StringBuffer();
+						if (!ST.isEmpty())
+							{
+							StringSalidaFinal.append("<li> "+((CompleteElementType)completeST).getName()+": </li>");
+							StringSalidaFinal.append("<ul>");
+							Salida = StringSalida.toString();
+							StringSalidaFinal.append("</ul>");
+							}
 						}
 				if (!Salida.isEmpty())
 					CodigoHTML.append(Salida);
+					
 			}
 			
 			CodigoHTML.append("</ul>");
@@ -290,78 +301,93 @@ public class HTMLprocessOdA extends HTMLprocess {
 			if (E!=null)
 				{
 				Vacio=false;
-				if (E instanceof CompleteTextElement)
-					StringSalida.append("<li> "+((CompleteElementType)completeST).getName()+": "+((CompleteTextElement)E).getValue()+"</li>");
-				else if (E instanceof CompleteLinkElement)
+				if (E instanceof CompleteLinkElement)
 					{
 					CompleteDocuments Linked=((CompleteLinkElement) E).getValue();
 					
 					File IconF=new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid());
 					IconF.mkdirs();
 					
+					String IconPath="";
+					String Link="";
 					
-					String Path=StaticFunctionsHTML.calculaIconoString(Linked.getIcon());
+					boolean isAfile=false;
 					
-					String[] spliteStri=Path.split("/");
-					String NameS = spliteStri[spliteStri.length-1];
-					String Icon=SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS;
-					
-					try {
-						URL url2 = new URL(Path);
-						 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
-						 url2 = uri2.toURL();
+					if (StaticFuctionsHTMLOdA.isAVirtualObject(Linked) )
+						IconPath=StaticFunctionsHTML.calculaIconoString(Linked.getIcon());
 						
-						saveImage(url2, Icon);
-					} catch (Exception e) {
-						CL.getLogLines().add("Error in Icon copy, file with url ->>"+Linked.getIcon()+" not found or restringed");
-					}
-					
-					int width= 50;
-					int height=50;
-					int widthmini= 50;
-					int heightmini=50;
-					
-					try {
-						BufferedImage bimg = ImageIO.read(new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS));
-						width= bimg.getWidth();
-						height= bimg.getHeight();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					
-					
-					 widthmini= 50;
-					 heightmini= (50*height)/width;
-					
-					
-					StringSalida.append("<li> "+((CompleteElementType)completeST).getName()+":  Document Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /> "+Linked.getDescriptionText()+"</li>");
-					}
-				else if (E instanceof CompleteResourceElementURL)
-					StringSalida.append("<li> "+((CompleteElementType)completeST).getName()+": "+((CompleteResourceElementURL)E).getValue()+"</li>");
-				else if (E instanceof CompleteResourceElementFile)
+					else if (StaticFuctionsHTMLOdA.isAFile(Linked) )
 					{
-					CompleteFile Linked=((CompleteResourceElementFile) E).getValue();
+						for (CompleteElement Elem : Linked.getDescription()) {
+							if (Elem instanceof CompleteResourceElement&&Elem.getHastype() instanceof CompleteResourceElementType&&StaticFuctionsHTMLOdA.isFileFisico(Elem.getHastype()))
+								{
+								if (Elem instanceof CompleteResourceElementFile)
+									{
+									IconPath=StaticFunctionsHTML.calculaIconoString(((CompleteResourceElementFile) Elem).getValue().getPath());
+									Link=((CompleteResourceElementFile) Elem).getValue().getPath();
+									}
+								if (Elem instanceof CompleteResourceElementURL)
+									{
+									IconPath=StaticFunctionsHTML.calculaIconoString(((CompleteResourceElementURL) Elem).getValue());
+									Link=((CompleteResourceElementURL) Elem).getValue();
+									}
+								}
+						}
+						isAfile=true;
+						
+					}
+					else if (StaticFuctionsHTMLOdA.isAURL(Linked) )
+					{
+						for (CompleteElement Elem : Linked.getDescription()) {
+							if (Elem instanceof CompleteResourceElement&&Elem.getHastype() instanceof CompleteResourceElementType&&StaticFuctionsHTMLOdA.isURI(Elem.getHastype()))
+								{
+								IconPath=StaticFunctionsHTML.calculaIconoStringURL();
+								if (Elem instanceof CompleteResourceElementFile)
+									{
+									Link=((CompleteResourceElementFile) Elem).getValue().getPath();
+									}
+								if (Elem instanceof CompleteResourceElementURL)
+									{
+									Link=((CompleteResourceElementURL) Elem).getValue();
+									}
+								}
+						}
+					}
 					
-					
-					File IconF=new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid());
-					IconF.mkdirs();
-					
-					String Path=StaticFunctionsHTML.calculaIconoString(Linked.getPath());
-					
-					
-					String[] spliteStri=Path.split("/");
+					String[] spliteStri=IconPath.split("/");
 					String NameS = spliteStri[spliteStri.length-1];
 					String Icon=SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS;
 					
 					try {
-						URL url2 = new URL(Path);
+						URL url2 = new URL(IconPath);
 						 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
 						 url2 = uri2.toURL();
 						
 						saveImage(url2, Icon);
 					} catch (Exception e) {
-						CL.getLogLines().add("Error in Icon copy, file with url ->> "+Linked.getPath()+" not found or restringed");
+						CL.getLogLines().add("Error in Icon copy, file with url ->>"+IconPath+" not found or restringed");
 					}
+					
+					
+					String NameSL="";
+					if (!Link.isEmpty()&&isAfile)
+					{
+					String[] spliteStriL=Link.split("/");
+					NameSL = spliteStriL[spliteStriL.length-1];
+					String IconL=SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameSL;
+					
+					try {
+						URL url2L = new URL(Link);
+						 URI uri2L = new URI(url2L.getProtocol(), url2L.getUserInfo(), url2L.getHost(), url2L.getPort(), url2L.getPath(), url2L.getQuery(), url2L.getRef());
+						 url2L = uri2L.toURL();
+						
+						saveImage(url2L, IconL);
+					} catch (Exception e) {
+						CL.getLogLines().add("Error in Icon copy, file with url ->>"+Link+" not found or restringed");
+					}
+					}
+					
+					
 					
 					int width= 50;
 					int height=50;
@@ -380,9 +406,24 @@ public class HTMLprocessOdA extends HTMLprocess {
 					 widthmini= 50;
 					 heightmini= (50*height)/width;
 					
-					StringSalida.append("<li> "+((CompleteElementType)completeST).getName()+":  File Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
+					 //TODO
+					if (Link.isEmpty())
+						StringSalida.append("<li> Document Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> "+Linked.getDescriptionText()+"</li>");
+					else
+						if (isAfile)
+							StringSalida.append("<li> Document Linked -> <img src=\""+
+						completeDocuments.getClavilenoid()+File.separator+NameS+
+						"\" onmouseover=\"this.width="+width+";this.height="+
+						height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+
+						"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> <a href=\""+completeDocuments.getClavilenoid()+File.separator+NameSL+"\" target=\"_blank\">"+
+						NameSL+"</a></li>");
+						else
+							StringSalida.append("<li> Document Linked -> <img src=\""+completeDocuments.getClavilenoid()
+									+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+
+									";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+
+									"\" /> <a href=\""+Link+"\" target=\"_blank\">"+Link+"</a></li>");
 					}
-				else 
+					else 
 					Vacio=true;
 				
 				}

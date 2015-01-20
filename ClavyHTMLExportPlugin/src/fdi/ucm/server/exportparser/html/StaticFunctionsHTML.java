@@ -111,4 +111,8 @@ public class StaticFunctionsHTML {
 											
 	}
 
+	public static String calculaIconoStringURL() {
+		return CLAVYICONOS+StaticIconos.ICONOHTML;
+	}
+
 }

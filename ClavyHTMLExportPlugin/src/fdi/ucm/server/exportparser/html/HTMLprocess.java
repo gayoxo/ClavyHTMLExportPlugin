@@ -219,6 +219,8 @@ public class HTMLprocess {
 						CL.getLogLines().add("Error in Icon copy, file with url ->>"+Linked.getIcon()+" not found or restringed");
 					}
 					
+					
+					
 					int width= 50;
 					int height=50;
 					int widthmini= 50;
