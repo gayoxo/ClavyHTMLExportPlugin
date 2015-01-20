@@ -222,9 +222,12 @@ public class HTMLprocessOdA extends HTMLprocess {
 							{
 							StringSalidaFinal.append("<li> "+((CompleteElementType)completeST).getName()+": </li>");
 							StringSalidaFinal.append("<ul>");
-							Salida = StringSalida.toString();
+							StringSalidaFinal.append(ST);
 							StringSalidaFinal.append("</ul>");
 							}
+						
+						Salida = StringSalidaFinal.toString();
+						
 						}
 				if (!Salida.isEmpty())
 					CodigoHTML.append(Salida);
@@ -406,19 +409,19 @@ public class HTMLprocessOdA extends HTMLprocess {
 					 widthmini= 50;
 					 heightmini= (50*height)/width;
 					
-					 //TODO
+					 
 					if (Link.isEmpty())
-						StringSalida.append("<li> Document Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> "+Linked.getDescriptionText()+"</li>");
+						StringSalida.append("<li> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> "+Linked.getDescriptionText()+"</li>");
 					else
 						if (isAfile)
-							StringSalida.append("<li> Document Linked -> <img src=\""+
+							StringSalida.append("<li> <img src=\""+
 						completeDocuments.getClavilenoid()+File.separator+NameS+
 						"\" onmouseover=\"this.width="+width+";this.height="+
 						height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+
 						"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> <a href=\""+completeDocuments.getClavilenoid()+File.separator+NameSL+"\" target=\"_blank\">"+
 						NameSL+"</a></li>");
 						else
-							StringSalida.append("<li> Document Linked -> <img src=\""+completeDocuments.getClavilenoid()
+							StringSalida.append("<li> <img src=\""+completeDocuments.getClavilenoid()
 									+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+
 									";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+
 									"\" /> <a href=\""+Link+"\" target=\"_blank\">"+Link+"</a></li>");

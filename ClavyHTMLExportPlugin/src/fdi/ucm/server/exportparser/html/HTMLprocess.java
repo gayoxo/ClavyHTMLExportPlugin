@@ -84,7 +84,7 @@ public class HTMLprocess {
 		 PrintWriter printw = null;
 		    
 		try {
-			 filewriter = new FileWriter(SOURCE_FOLDER+"\\ejemplo.html");//declarar el archivo
+			 filewriter = new FileWriter(SOURCE_FOLDER+"\\index.html");//declarar el archivo
 		     printw = new PrintWriter(filewriter);//declarar un impresor
 		          
 		     printw.println(CodigoHTML.toString());
