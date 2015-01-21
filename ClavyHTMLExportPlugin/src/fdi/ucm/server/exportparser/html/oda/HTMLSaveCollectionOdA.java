@@ -29,7 +29,7 @@ import fdi.ucm.server.modelComplete.collection.CompleteLogAndUpdates;
  */
 public class HTMLSaveCollectionOdA extends SaveCollection {
 
-	private static final String ODA = "HTML of Data for OdA";
+	private static final String ODA = "HTML de datos en OdA";
 	private ArrayList<ImportExportPair> Parametros;
 	private ArrayList<Long> ListaDeDocumentos;
 	private String Path;
@@ -38,6 +38,9 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 	private List<String> fileList; 
 	private String OUTPUT_ZIP_FILE = "";
 	private String SOURCE_FOLDER = ""; // SourceFolder path
+	private ArrayList<Long> DocumentsList;
+	private ArrayList<Long> StructureList;
+	private boolean Admin;
 	private static final Pattern regexAmbito = Pattern.compile("^[0-9]+(,[0-9]+)*$");
 
 	
@@ -45,6 +48,9 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 	 * Constructor por defecto
 	 */
 		public HTMLSaveCollectionOdA() {
+			DocumentsList=new ArrayList<Long>();
+			StructureList=new ArrayList<Long>();
+			Admin=true;
 	}
 
 	/* (non-Javadoc)
@@ -66,7 +72,8 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 			Dir.mkdirs();
 			
 			
-			HTMLprocessOdA oda= new HTMLprocessOdA(ListaDeDocumentos,Salvar,SOURCE_FOLDER,CL,new ArrayList<Long>(),true);
+			
+			HTMLprocessOdA oda= new HTMLprocessOdA(ListaDeDocumentos,Salvar,SOURCE_FOLDER,CL,DocumentsList,Admin,StructureList);
 			
 			
 			oda.preocess();
@@ -81,7 +88,7 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 				CL.getLogLines().add("Descarga el zip");
 			} catch (Exception e) {
 				e.printStackTrace();
-				CL.getLogLines().add("Error en zip, refresh images manually");
+				CL.getLogLines().add("Error en zip, refresca las imagenes manualmente");
 			}
 
 			return CL;
@@ -124,7 +131,7 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 		if (Parametros==null)
 		{
 			ArrayList<ImportExportPair> ListaCampos=new ArrayList<ImportExportPair>();
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Number of IDOV in OdA to export separated by ','"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Number de los IDOV en OdA para exportar separados por ','"));
 			Parametros=ListaCampos;
 			return ListaCampos;
 		}
@@ -135,12 +142,16 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 	public void setConfiguracion(ArrayList<String> DateEntrada) {
 		if (DateEntrada!=null)
 		{
-			try {
-				
-			} catch (Exception e) {
-				throw new CompleteImportRuntimeException("List of Documents can not be normal, list should be like this \"####,####,####\"");
-			}
-			ListaDeDocumentos=generaListaDocuments(DateEntrada.get(0));
+			String Entrada=DateEntrada.get(0).trim();
+			if (Entrada.endsWith(","))
+				Entrada=Entrada.substring(0, Entrada.length()-1);
+			
+			if (testList(Entrada))
+				ListaDeDocumentos=generaListaDocuments(Entrada);
+			else
+				throw new CompleteImportRuntimeException("La lista de documentos no posee una forma normal, debe de tener la forma: \"####,####,####\"");
+			
+			
 
 		}
 	}
@@ -280,6 +291,48 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 			return true;
 		 Matcher matcher = regexAmbito.matcher(number);
 		return matcher.matches();
+	}
+
+	/**
+	 * @return the documentsList
+	 */
+	public ArrayList<Long> getDocumentsList() {
+		return DocumentsList;
+	}
+
+	/**
+	 * @param documentsList the documentsList to set
+	 */
+	public void setDocumentsList(ArrayList<Long> documentsList) {
+		DocumentsList = documentsList;
+	}
+
+	/**
+	 * @return the structureList
+	 */
+	public ArrayList<Long> getStructureList() {
+		return StructureList;
+	}
+
+	/**
+	 * @param structureList the structureList to set
+	 */
+	public void setStructureList(ArrayList<Long> structureList) {
+		StructureList = structureList;
+	}
+
+	/**
+	 * @return the admin
+	 */
+	public boolean isAdmin() {
+		return Admin;
+	}
+
+	/**
+	 * @param admin the admin to set
+	 */
+	public void setAdmin(boolean admin) {
+		Admin = admin;
 	}
 	
 	

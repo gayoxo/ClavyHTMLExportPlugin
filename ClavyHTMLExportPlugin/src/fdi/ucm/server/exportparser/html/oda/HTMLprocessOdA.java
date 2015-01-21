@@ -37,7 +37,9 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
  */
 public class HTMLprocessOdA extends HTMLprocess {
 
+	protected static final String EXPORTTEXT = "Resultado de Exportacion en HTML";
 	private HashSet<Long> AdministradorListaDocumentos;
+	private HashSet<Long> AdministradorListaStructura;
 	private boolean Administrador;
 
 	/**
@@ -45,17 +47,26 @@ public class HTMLprocessOdA extends HTMLprocess {
 	 * @param salvar 
 	 * @param sOURCE_FOLDER 
 	 * @param cL 
+	 * @param listaStructura 
 	 * @param b 
 	 * @param arrayList 
 	 */
-	public HTMLprocessOdA(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL, ArrayList<Long> administradorList, boolean administrador) {
+	public HTMLprocessOdA(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL, ArrayList<Long> administradorList, boolean administrador, ArrayList<Long> listaStructura) {
 		super(listaDeDocumentos,salvar,sOURCE_FOLDER,cL);
+		
 		AdministradorListaDocumentos=new HashSet<Long>();
 		for (Long long1 : administradorList) {
 			if (!AdministradorListaDocumentos.contains(long1))
 				AdministradorListaDocumentos.add(long1);
 		}
 		Administrador=administrador;
+		
+		AdministradorListaStructura=new HashSet<Long>();
+		for (Long long1 : listaStructura) {
+			if (!AdministradorListaStructura.contains(long1))
+				AdministradorListaStructura.add(long1);
+		}
+
 	}
 	
 	@Override
@@ -138,7 +149,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 				if (elemetpos instanceof CompleteTextElement&&elemetpos.getHastype() instanceof CompleteTextElementType&&StaticFuctionsHTMLOdA.isIDOV((CompleteTextElementType)elemetpos.getHastype()))
 					IDOV=((CompleteTextElement) elemetpos).getValue();
 			}
-			CodigoHTML.append("<li> Document: "+IDOV+"</li>");
+			CodigoHTML.append("<li class=\"doc\"> <b>Document: "+IDOV+" </b></li>");
 			CodigoHTML.append("<ul>");
 			File IconF=new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid());
 			IconF.mkdirs();
@@ -157,7 +168,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 				
 				saveImage(url2, Icon);
 			} catch (Exception e) {
-				CL.getLogLines().add("Error in Icon copy, file with url ->>"+completeDocuments.getIcon()+" not found or restringed");
+				CL.getLogLines().add("Error en copia del icono con url ->>"+completeDocuments.getIcon()+" not encontrado o restringido");
 			}
 			
 			int width= 50;
@@ -180,8 +191,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 //			if (width=0)
 			
 			
-			CodigoHTML.append("<li> Icon: <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
-			CodigoHTML.append("<li> Description: "+completeDocuments.getDescriptionText()+"</li>");
+			CodigoHTML.append("<li> <b>Icon:</b> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
+			CodigoHTML.append("<li> <b>Description:</b> "+completeDocuments.getDescriptionText()+"</li>");
 			
 			
 			ArrayList<CompleteStructure> OdAElements=findOdAElements(completeGrammar.getSons());
@@ -200,9 +211,11 @@ public class HTMLprocessOdA extends HTMLprocess {
 							ambitosNuevos.add(integer);
 							
 							StringBuffer Hijos=new StringBuffer();
+							
+							String result2="";
 
-
-								String result2 = processSTRecursos(completeST, completeDocuments, ambitosNuevos);
+								if ((Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST))&&inList((CompleteElementType)completeST))
+									result2 = processSTRecursos(completeST, completeDocuments, ambitosNuevos);
 								
 								if (!result2.isEmpty())
 									Hijos.append(result2.toString());	
@@ -220,7 +233,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 						StringBuffer StringSalidaFinal = new StringBuffer();
 						if (!ST.isEmpty())
 							{
-							StringSalidaFinal.append("<li> "+((CompleteElementType)completeST).getName()+": </li>");
+							StringSalidaFinal.append("<li> <b>"+((CompleteElementType)completeST).getName()+": </b></li>");
 							StringSalidaFinal.append("<ul>");
 							StringSalidaFinal.append(ST);
 							StringSalidaFinal.append("</ul>");
@@ -245,6 +258,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
 		StringBuffer StringSalida=new StringBuffer();
 		boolean Vacio=true;
+		boolean Visible=false;
 		if (completeST instanceof CompleteElementType)
 			{
 			CompleteElement E=findElem(completeST,completeDocuments.getDescription(),ambitos);
@@ -252,7 +266,14 @@ public class HTMLprocessOdA extends HTMLprocess {
 				{
 				Vacio=false;
 				if (E instanceof CompleteTextElement)
-					StringSalida.append("<li> "+((CompleteElementType)completeST).getName()+": "+((CompleteTextElement)E).getValue()+"</li>");
+					{
+					if (Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST)&&inList((CompleteElementType)completeST))
+						{
+							StringSalida.append("<li><b> "+((CompleteElementType)completeST).getName()+":</b> "+((CompleteTextElement)E).getValue()+"</li>");
+							StringSalida.append("<ul>");
+							Visible=true;
+						}
+					}
 				else 
 					Vacio=true;
 				
@@ -272,19 +293,19 @@ public class HTMLprocessOdA extends HTMLprocess {
 			
 			String HijosSalida = Hijos.toString();
 			
-			if (!HijosSalida.isEmpty()&&Vacio)
+			if (!HijosSalida.isEmpty()&&Vacio&&(Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST))&&inList((CompleteElementType)completeST))
 			{
-			StringSalida.append("<li> "+((CompleteElementType)completeST).getName()+": </li>");
-			
+			StringSalida.append("<li><b> "+((CompleteElementType)completeST).getName()+":</b> </li>");
+			StringSalida.append("<ul>");
+			Visible=true;
 			}
 		
 		if (!HijosSalida.isEmpty())
-			{
-			StringSalida.append("<ul>");
 			StringSalida.append(HijosSalida);
-			StringSalida.append("</ul>");
-			}
 			
+		if (Visible)
+			StringSalida.append("</ul>");
+		
 			}
 
 		return StringSalida.toString();
@@ -294,17 +315,28 @@ public class HTMLprocessOdA extends HTMLprocess {
 	
 	
 	
+	private boolean inList(CompleteElementType completeST) {
+		if (AdministradorListaStructura.isEmpty())
+		return true;
+		else
+			{
+			Integer IDOdA=StaticFuctionsHTMLOdA.getIDODAD(completeST);
+			if (IDOdA==null)
+				return false;
+			else
+			return AdministradorListaStructura.contains(new Long(IDOdA));
+			}
+	}
+
 	private String processSTRecursos(CompleteStructure completeST,
 			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
 		StringBuffer StringSalida=new StringBuffer();
-		boolean Vacio=true;
 		if (completeST instanceof CompleteElementType)
 			{
 			CompleteElement E=findElem(completeST,completeDocuments.getDescription(),ambitos);
 			if (E!=null)
 				{
-				Vacio=false;
-				if (E instanceof CompleteLinkElement)
+				if (E instanceof CompleteLinkElement&&(StaticFuctionsHTMLOdA.getVisible(E)||Administrador||inList(completeDocuments)))
 					{
 					CompleteDocuments Linked=((CompleteLinkElement) E).getValue();
 					
@@ -368,7 +400,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 						
 						saveImage(url2, Icon);
 					} catch (Exception e) {
-						CL.getLogLines().add("Error in Icon copy, file with url ->>"+IconPath+" not found or restringed");
+						CL.getLogLines().add("Error en copia del icono con url ->>"+IconPath+" no encontrado o restringido");
 					}
 					
 					
@@ -386,7 +418,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 						
 						saveImage(url2L, IconL);
 					} catch (Exception e) {
-						CL.getLogLines().add("Error in Icon copy, file with url ->>"+Link+" not found or restringed");
+						CL.getLogLines().add("Error en copia del archivo con url ->>"+Link+" no encontrado o restringido");
 					}
 					}
 					
@@ -425,38 +457,34 @@ public class HTMLprocessOdA extends HTMLprocess {
 									+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+
 									";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+
 									"\" /> <a href=\""+Link+"\" target=\"_blank\">"+Link+"</a></li>");
+					
+					StringBuffer Hijos=new StringBuffer();
+					for (CompleteStructure hijo : completeST.getSons()) {
+						
+						String result2 = processSTDatosYMeta(hijo, completeDocuments, ambitos);
+						
+						if (!result2.isEmpty())
+							Hijos.append(result2.toString());	
 					}
-					else 
-					Vacio=true;
+					
+					
+					String HijosSalida = Hijos.toString();
+					
+				
+				if (!HijosSalida.isEmpty())
+					{
+					StringSalida.append("<ul>");
+					StringSalida.append(HijosSalida);
+					StringSalida.append("</ul>");
+					}
+					
+					}
+
 				
 				}
-			else
-				Vacio=true;
-			
-			StringBuffer Hijos=new StringBuffer();
-			for (CompleteStructure hijo : completeST.getSons()) {
-				
-				String result2 = processSTDatosYMeta(hijo, completeDocuments, ambitos);
-				
-				if (!result2.isEmpty())
-					Hijos.append(result2.toString());	
-			}
+
 			
 			
-			String HijosSalida = Hijos.toString();
-			
-			if (!HijosSalida.isEmpty()&&Vacio)
-			{
-			StringSalida.append("<li> "+((CompleteElementType)completeST).getName()+": </li>");
-			
-			}
-		
-		if (!HijosSalida.isEmpty())
-			{
-			StringSalida.append("<ul>");
-			StringSalida.append(HijosSalida);
-			StringSalida.append("</ul>");
-			}
 			
 			}
 

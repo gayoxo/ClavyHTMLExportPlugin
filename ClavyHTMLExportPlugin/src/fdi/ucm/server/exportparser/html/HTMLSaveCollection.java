@@ -81,14 +81,14 @@ public class HTMLSaveCollection extends SaveCollection {
 				CL.getLogLines().add("Descarga el zip");
 			} catch (Exception e) {
 				e.printStackTrace();
-				CL.getLogLines().add("Error en zip, refresh images manually");
+				CL.getLogLines().add("Error in zip, refresh images manually");
 			}
 
 			return CL;
 			}
 			else 
 			{
-				CL.getLogLines().add("Error en lista, numero de documentos vacio");
+				CL.getLogLines().add("Error in list, numeber of documents empty");
 				return CL;
 			}
 
@@ -135,12 +135,15 @@ public class HTMLSaveCollection extends SaveCollection {
 	public void setConfiguracion(ArrayList<String> DateEntrada) {
 		if (DateEntrada!=null)
 		{
-			try {
-				
-			} catch (Exception e) {
+			
+			String Entrada=DateEntrada.get(0).trim();
+			if (Entrada.endsWith(","))
+				Entrada=Entrada.substring(0, Entrada.length()-1);
+			
+			if (testList(Entrada))
+				ListaDeDocumentos=generaListaDocuments(Entrada);
+			else
 				throw new CompleteImportRuntimeException("List of Documents can not be normal, list should be like this \"####,####,####\"");
-			}
-			ListaDeDocumentos=generaListaDocuments(DateEntrada.get(0));
 
 		}
 	}
