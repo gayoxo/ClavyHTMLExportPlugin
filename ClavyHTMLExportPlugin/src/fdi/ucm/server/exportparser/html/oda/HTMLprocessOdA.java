@@ -214,7 +214,6 @@ public class HTMLprocessOdA extends HTMLprocess {
 							
 							String result2="";
 
-								if ((Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST))&&inList((CompleteElementType)completeST))
 									result2 = processSTRecursos(completeST, completeDocuments, ambitosNuevos);
 								
 								if (!result2.isEmpty())
@@ -259,7 +258,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 		StringBuffer StringSalida=new StringBuffer();
 		boolean Vacio=true;
 		boolean Visible=false;
-		if (completeST instanceof CompleteElementType)
+		if (completeST instanceof CompleteElementType&&inList((CompleteElementType)completeST))
 			{
 			CompleteElement E=findElem(completeST,completeDocuments.getDescription(),ambitos);
 			if (E!=null)
@@ -267,7 +266,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 				Vacio=false;
 				if (E instanceof CompleteTextElement)
 					{
-					if (Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST)&&inList((CompleteElementType)completeST))
+					if (Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST))
 						{
 							StringSalida.append("<li><b> "+((CompleteElementType)completeST).getName()+":</b> "+((CompleteTextElement)E).getValue()+"</li>");
 							StringSalida.append("<ul>");
@@ -293,7 +292,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 			
 			String HijosSalida = Hijos.toString();
 			
-			if (!HijosSalida.isEmpty()&&Vacio&&(Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST))&&inList((CompleteElementType)completeST))
+			if (!HijosSalida.isEmpty()&&Vacio&&(Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST)))
 			{
 			StringSalida.append("<li><b> "+((CompleteElementType)completeST).getName()+":</b> </li>");
 			StringSalida.append("<ul>");
