@@ -159,7 +159,7 @@ public class HTMLprocess {
 			}
 			
 			CodigoHTML.append("</ul>");
-			
+			CodigoHTML.append("<br>");
 		}
 		
 		

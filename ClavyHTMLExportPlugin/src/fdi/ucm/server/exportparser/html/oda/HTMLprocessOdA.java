@@ -247,13 +247,45 @@ public class HTMLprocessOdA extends HTMLprocess {
 			}
 			
 			CodigoHTML.append("</ul>");
-			
+			CodigoHTML.append("<br>");
 		}
 		
 		
 	}
 
 	private String processSTDatosYMeta(CompleteStructure completeST,
+			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
+		StringBuffer StringSalida=new StringBuffer();
+		if (completeST instanceof CompleteElementType)
+			{
+			
+			StringBuffer Hijos=new StringBuffer();
+			for (CompleteStructure hijo : completeST.getSons()) {
+				
+				String result2 = processSTResto(hijo, completeDocuments, ambitos);
+				
+				if (!result2.isEmpty())
+					Hijos.append(result2.toString());	
+			}
+			
+			
+			String HijosSalida = Hijos.toString();
+			
+			if (!HijosSalida.isEmpty())
+			{
+			StringSalida.append("<li><b> "+((CompleteElementType)completeST).getName()+":</b> </li>");
+			StringSalida.append("<ul>");
+			StringSalida.append(HijosSalida);
+			StringSalida.append("</ul>");
+			}
+		
+			}
+
+		return StringSalida.toString();
+		
+	}
+	
+	private String processSTResto(CompleteStructure completeST,
 			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
 		StringBuffer StringSalida=new StringBuffer();
 		boolean Vacio=true;
@@ -283,7 +315,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 			StringBuffer Hijos=new StringBuffer();
 			for (CompleteStructure hijo : completeST.getSons()) {
 				
-				String result2 = processSTDatosYMeta(hijo, completeDocuments, ambitos);
+				String result2 = processSTResto(hijo, completeDocuments, ambitos);
 				
 				if (!result2.isEmpty())
 					Hijos.append(result2.toString());	
@@ -310,7 +342,6 @@ public class HTMLprocessOdA extends HTMLprocess {
 		return StringSalida.toString();
 		
 	}
-	
 	
 	
 	
@@ -460,7 +491,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 					StringBuffer Hijos=new StringBuffer();
 					for (CompleteStructure hijo : completeST.getSons()) {
 						
-						String result2 = processSTDatosYMeta(hijo, completeDocuments, ambitos);
+						String result2 = processSTResto(hijo, completeDocuments, ambitos);
 						
 						if (!result2.isEmpty())
 							Hijos.append(result2.toString());	
