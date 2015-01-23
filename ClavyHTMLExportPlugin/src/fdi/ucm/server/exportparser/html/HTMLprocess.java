@@ -59,7 +59,7 @@ public class HTMLprocess {
 		CodigoHTML=new StringBuffer();
 		CodigoHTML.append("<html>");
 		CodigoHTML.append("<head>");  
-		CodigoHTML.append("<title>"+EXPORTTEXT+"</title>"); 
+		CodigoHTML.append("<title>"+EXPORTTEXT+"</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"); 
 		CodigoHTML.append("<style>");
 		CodigoHTML.append("li.doc {color: blue;}");	
 		CodigoHTML.append("</style>");
