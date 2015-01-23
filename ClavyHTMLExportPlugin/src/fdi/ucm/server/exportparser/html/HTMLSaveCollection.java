@@ -192,14 +192,14 @@ public class HTMLSaveCollection extends SaveCollection {
 	   ZipOutputStream zos = null;
 	   try
 	   {
-	      try
-	      {
-	         source = SOURCE_FOLDER.substring(SOURCE_FOLDER.lastIndexOf("\\") + 1, SOURCE_FOLDER.length());
-	      }
-	     catch (Exception e)
-	     {
-	        source = SOURCE_FOLDER;
-	     }
+//	      try
+//	      {
+//	         source = SOURCE_FOLDER.substring(SOURCE_FOLDER.lastIndexOf("\\") + 1, SOURCE_FOLDER.length());
+//	      }
+//	     catch (Exception e)
+//	     {
+//	        source = SOURCE_FOLDER;
+//	     }
 	     fos = new FileOutputStream(zipFile);
 	     zos = new ZipOutputStream(fos);
 
