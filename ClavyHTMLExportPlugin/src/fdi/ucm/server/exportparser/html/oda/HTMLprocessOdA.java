@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -41,6 +43,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 	private HashSet<Long> AdministradorListaDocumentos;
 	private HashSet<Long> AdministradorListaStructura;
 	private boolean Administrador;
+	private static final Pattern regexAmbito = Pattern.compile("^(ht|f)tp(s)*://(.)*$");
 
 	/**
 	 * @param listaDeDocumentos
@@ -149,7 +152,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 				if (elemetpos instanceof CompleteTextElement&&elemetpos.getHastype() instanceof CompleteTextElementType&&StaticFuctionsHTMLOdA.isIDOV((CompleteTextElementType)elemetpos.getHastype()))
 					IDOV=((CompleteTextElement) elemetpos).getValue();
 			}
-			CodigoHTML.append("<li class=\"doc\"> <b>Document: "+IDOV+" </b></li>");
+			CodigoHTML.append("<li class=\"doc\"> <b>Objeto Virtual: "+IDOV+" </b></li>");
 			CodigoHTML.append("<ul>");
 			File IconF=new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid());
 			IconF.mkdirs();
@@ -191,8 +194,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 //			if (width=0)
 			
 			
-			CodigoHTML.append("<li> <b>Icon:</b> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
-			CodigoHTML.append("<li> <b>Description:</b> "+completeDocuments.getDescriptionText()+"</li>");
+			CodigoHTML.append("<li> <b>Icono:</b> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
+			CodigoHTML.append("<li> <b>Descripción:</b> "+completeDocuments.getDescriptionText()+"</li>");
 			
 			
 			ArrayList<CompleteStructure> OdAElements=findOdAElements(completeGrammar.getSons());
@@ -483,10 +486,16 @@ public class HTMLprocessOdA extends HTMLprocess {
 						"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> <a href=\""+completeDocuments.getClavilenoid()+File.separator+NameSL+"\" target=\"_blank\">"+
 						NameSL+"</a></li>");
 						else
+							{
+							if (!testLink(Link))
+								Link="http:\\\\"+Link;
+							
 							StringSalida.append("<li> <img src=\""+completeDocuments.getClavilenoid()
+							
 									+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+
 									";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+
 									"\" /> <a href=\""+Link+"\" target=\"_blank\">"+Link+"</a></li>");
+							}
 					
 					StringBuffer Hijos=new StringBuffer();
 					for (CompleteStructure hijo : completeST.getSons()) {
@@ -554,4 +563,24 @@ public class HTMLprocessOdA extends HTMLprocess {
 		return Salida;
 	}
 
+	public static void main(String[] args) {
+		System.out.println(testLink("http://"));
+		System.out.println(testLink("ftp://"));
+		System.out.println(testLink("ftps://"));
+		System.out.println(testLink("https://"));
+		System.out.println(testLink("http://localhost/Oda"));
+		System.out.println(testLink("http://localhost/Oda"));
+		System.out.println(testLink("http://localhost:1000/Oda"));
+		System.out.println(testLink("http://localhost:/Oda"));
+		System.out.println(testLink("http://192.168.1.1:266/Oda"));
+		System.out.println(!("http://localhost/Oda").endsWith("/"));
+		System.out.println(!("http://localhost/oda-ref/").endsWith("/"));
+	}
+	
+	public static boolean testLink(String baseURLOda2) {
+		if (baseURLOda2==null||baseURLOda2.isEmpty())
+			return true;
+		 Matcher matcher = regexAmbito.matcher(baseURLOda2);
+		return matcher.matches();
+	}
 }

@@ -60,9 +60,10 @@ public class HTMLprocess {
 		CodigoHTML.append("<html>");
 		CodigoHTML.append("<head>");  
 		CodigoHTML.append("<title>"+EXPORTTEXT+"</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"); 
-		CodigoHTML.append("<style>");
-		CodigoHTML.append("li.doc {color: blue;}");	
-		CodigoHTML.append("</style>");
+		CodigoHTML.append("<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"style.css\">");
+//		CodigoHTML.append("<style>");
+//		CodigoHTML.append("li.doc {color: blue;}");	
+//		CodigoHTML.append("</style>");
 		CodigoHTML.append("</head>");  
 		CodigoHTML.append("<body>");
 		CodigoHTML.append("<ul>");
@@ -79,8 +80,26 @@ public class HTMLprocess {
 		CodigoHTML.append("</html>");
 		
 		creaLaWeb();
+		creaLACSS();
 		
 		
+	}
+
+	private void creaLACSS() {
+		 FileWriter filewriter = null;
+		 PrintWriter printw = null;
+		    
+		try {
+			 filewriter = new FileWriter(SOURCE_FOLDER+"\\style.css");//declarar el archivo
+		     printw = new PrintWriter(filewriter);//declarar un impresor
+		          
+		     printw.println("li.doc {color: blue;}");
+		     
+		     printw.close();//cerramos el archivo
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeErrorException(new Error(e), "Error de archivo");
+		} 
 		
 	}
 
