@@ -810,5 +810,24 @@ public class StaticFuctionsHTMLOdA {
 		}
 		return false;
 	}
+
+
+
+	public static String getDescription(CompleteGrammar completeGrammar) {
+		ArrayList<CompleteOperationalView> Shows = completeGrammar.getViews();
+		for (CompleteOperationalView show : Shows) {
+			
+			if (show.getName().equals(StaticNamesHTMLOdA.META))
+			{
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
+					if (CompleteOperationalValueType.getName().equals(StaticNamesHTMLOdA.DESCRIPTIONNAME))
+								return CompleteOperationalValueType.getDefault();
+
+				}
+			}
+		}
+		return "";
+	}
 	
 }

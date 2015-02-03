@@ -14,6 +14,7 @@ public class StaticNamesHTMLOdA {
 	public static final String IDOV = "IDOV";
 	public static final String FILE = "File";
 	public static final String FILERESOURCE = "File Resource";
+	public static final String DESCRIPTIONNAME = "Descripción";
 	public static final String METADATOS = "Metadatos";
 	public static final String DATOS = "Datos";
 	public static final String RESOURCE = "Resource";

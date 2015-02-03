@@ -10,9 +10,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.imageio.ImageIO;
 
 import fdi.ucm.server.exportparser.html.HTMLprocess;
@@ -43,7 +40,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 	private HashSet<Long> AdministradorListaDocumentos;
 	private HashSet<Long> AdministradorListaStructura;
 	private boolean Administrador;
-	private static final Pattern regexAmbito = Pattern.compile("^(ht|f)tp(s)*://(.)*$");
+
 
 	/**
 	 * @param listaDeDocumentos
@@ -152,7 +149,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 				if (elemetpos instanceof CompleteTextElement&&elemetpos.getHastype() instanceof CompleteTextElementType&&StaticFuctionsHTMLOdA.isIDOV((CompleteTextElementType)elemetpos.getHastype()))
 					IDOV=((CompleteTextElement) elemetpos).getValue();
 			}
-			CodigoHTML.append("<li class=\"doc\"> <b>Objeto Virtual: "+IDOV+" </b></li>");
+			CodigoHTML.append("<li class=\"doc\"> <b>Objeto Digital: "+IDOV+" </b></li>");
 			CodigoHTML.append("<ul>");
 			File IconF=new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid());
 			IconF.mkdirs();
@@ -192,10 +189,12 @@ public class HTMLprocessOdA extends HTMLprocess {
 			 heightmini= (50*height)/width;
 			
 //			if (width=0)
-			
-			
+			 String Description=StaticFuctionsHTMLOdA.getDescription(completeGrammar);
+			 if (Description.isEmpty())
+				 Description="Descripción";
+			 
 			CodigoHTML.append("<li> <b>Icono:</b> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
-			CodigoHTML.append("<li> <b>Descripción:</b> "+completeDocuments.getDescriptionText()+"</li>");
+			CodigoHTML.append("<li> <b>"+Description+":</b> "+completeDocuments.getDescriptionText()+"</li>");
 			
 			
 			ArrayList<CompleteStructure> OdAElements=findOdAElements(completeGrammar.getSons());
@@ -488,7 +487,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 						else
 							{
 							if (!testLink(Link))
-								Link="http:\\\\"+Link;
+								Link="http://"+Link;
 							
 							StringSalida.append("<li> <img src=\""+completeDocuments.getClavilenoid()
 							
@@ -577,10 +576,5 @@ public class HTMLprocessOdA extends HTMLprocess {
 		System.out.println(!("http://localhost/oda-ref/").endsWith("/"));
 	}
 	
-	public static boolean testLink(String baseURLOda2) {
-		if (baseURLOda2==null||baseURLOda2.isEmpty())
-			return true;
-		 Matcher matcher = regexAmbito.matcher(baseURLOda2);
-		return matcher.matches();
-	}
+	
 }

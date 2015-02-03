@@ -16,6 +16,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.management.RuntimeErrorException;
@@ -46,6 +48,7 @@ public class HTMLprocess {
 	protected String SOURCE_FOLDER;
 	protected StringBuffer CodigoHTML;
 	protected CompleteLogAndUpdates CL;
+	private static final Pattern regexAmbito = Pattern.compile("^(ht|f)tp(s)*://(.)*$");
 
 	public HTMLprocess(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL) {
 		ListaDeDocumentos=listaDeDocumentos;
@@ -61,6 +64,8 @@ public class HTMLprocess {
 		CodigoHTML.append("<head>");  
 		CodigoHTML.append("<title>"+EXPORTTEXT+"</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"); 
 		CodigoHTML.append("<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"style.css\">");
+		CodigoHTML.append("<meta name=\"description\" content=\"Informe generado por el sistema OdAClavi\">");
+		CodigoHTML.append("<meta name=\"author\" content=\"Grupo de investigación ILSA-UCM\">");
 //		CodigoHTML.append("<style>");
 //		CodigoHTML.append("li.doc {color: blue;}");	
 //		CodigoHTML.append("</style>");
@@ -266,7 +271,14 @@ public class HTMLprocess {
 					StringSalida.append("<li> <b>"+((CompleteElementType)completeST).getName()+": </b> Document Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /> "+Linked.getDescriptionText()+"</li>");
 					}
 				else if (E instanceof CompleteResourceElementURL)
-					StringSalida.append("<li> <b>"+((CompleteElementType)completeST).getName()+": </b>"+((CompleteResourceElementURL)E).getValue()+"</li>");
+					{
+					String Link = ((CompleteResourceElementURL)E).getValue();
+							
+							if (!testLink(Link))
+								Link="http://"+Link;
+					StringSalida.append("<li> <b>"+((CompleteElementType)completeST).getName()+": </b>"+Link+"</li>");
+					
+					}
 				else if (E instanceof CompleteResourceElementFile)
 					{
 					CompleteFile Linked=((CompleteResourceElementFile) E).getValue();
@@ -309,7 +321,12 @@ public class HTMLprocess {
 					 widthmini= 50;
 					 heightmini= (50*height)/width;
 					
-					StringSalida.append("<li> <b>"+((CompleteElementType)completeST).getName()+":</b> File Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
+					StringSalida.append("<li> <b>"+((CompleteElementType)completeST).getName()+":</b> " +
+							"File Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\"" +
+									" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" />" +
+									"<a href=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" target=\"_blank\">"+
+									NameS+"</a></li>");				
+
 					}
 				else 
 					Vacio=true;
@@ -445,6 +462,13 @@ public class HTMLprocess {
 			Salida.add(completeGrammar);
 		}
 		return Salida;
+	}
+	
+	public static boolean testLink(String baseURLOda2) {
+		if (baseURLOda2==null||baseURLOda2.isEmpty())
+			return true;
+		 Matcher matcher = regexAmbito.matcher(baseURLOda2);
+		return matcher.matches();
 	}
 
 }
