@@ -77,7 +77,11 @@ public class HTMLprocess {
 		ArrayList<CompleteGrammar> GramaticasAProcesar=ProcesaGramaticas(Salvar.getMetamodelGrammar());
 		for (CompleteGrammar completeGrammar : GramaticasAProcesar) {
 			ArrayList<CompleteDocuments> Lista=calculadocumentos(completeGrammar);
-			proceraDocumentos(Lista,completeGrammar);
+			if (!Lista.isEmpty())
+				{
+				Lista=ordenaLista(Lista);
+				proceraDocumentos(Lista,completeGrammar);
+				}
 		}
 		
 		CodigoHTML.append("</ul>");
@@ -89,6 +93,36 @@ public class HTMLprocess {
 		
 		
 	}
+
+	private ArrayList<CompleteDocuments> ordenaLista(
+			ArrayList<CompleteDocuments> lista) {
+		quicksort(lista, 0, lista.size()-1);
+		return lista;
+	}
+	
+	protected void quicksort(ArrayList<CompleteDocuments> A, int izq, int der) {
+
+		  CompleteDocuments pivote=A.get(izq); // tomamos primer elemento como pivote
+		  int i=izq; // i realiza la búsqueda de izquierda a derecha
+		  int j=der; // j realiza la búsqueda de derecha a izquierda
+		  CompleteDocuments aux;
+		 
+		  while(i<j){            // mientras no se crucen las búsquedas
+		     while(A.get(i).getClavilenoid()<=pivote.getClavilenoid() && i<j) i++; // busca elemento mayor que pivote
+		     while(A.get(j).getClavilenoid()>pivote.getClavilenoid()) j--;         // busca elemento menor que pivote
+		     if (i<j) {                      // si no se han cruzado                      
+		         aux= A.get(i);                  // los intercambia
+		         A.set(i, A.get(j));
+		         A.set(j,aux);
+		     }
+		   }
+		  A.set(izq,A.get(j)); // se coloca el pivote en su lugar de forma que tendremos
+		  A.set(j,pivote); // los menores a su izquierda y los mayores a su derecha
+		   if(izq<j-1)
+		      quicksort(A,izq,j-1); // ordenamos subarray izquierdo
+		   if(j+1 <der)
+		      quicksort(A,j+1,der); // ordenamos subarray derecho
+		}
 
 	private void creaLACSS() {
 		 FileWriter filewriter = null;

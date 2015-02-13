@@ -70,6 +70,52 @@ public class HTMLprocessOdA extends HTMLprocess {
 	}
 	
 	@Override
+	protected void quicksort(ArrayList<CompleteDocuments> A, int izq, int der) {
+
+		  CompleteDocuments pivote=A.get(izq); // tomamos primer elemento como pivote
+		  int i=izq; // i realiza la búsqueda de izquierda a derecha
+		  int j=der; // j realiza la búsqueda de derecha a izquierda
+		  CompleteDocuments aux;
+		 
+		  while(i<j){            // mientras no se crucen las búsquedas
+		     while(getIDOV(A.get(i))<=getIDOV(pivote) && i<j) i++; // busca elemento mayor que pivote
+		     while(getIDOV(A.get(j))>getIDOV(pivote)) j--;         // busca elemento menor que pivote
+		     if (i<j) {                      // si no se han cruzado                      
+		         aux= A.get(i);                  // los intercambia
+		         A.set(i, A.get(j));
+		         A.set(j,aux);
+		     }
+		   }
+		  A.set(izq,A.get(j)); // se coloca el pivote en su lugar de forma que tendremos
+		  A.set(j,pivote); // los menores a su izquierda y los mayores a su derecha
+		   if(izq<j-1)
+		      quicksort(A,izq,j-1); // ordenamos subarray izquierdo
+		   if(j+1 <der)
+		      quicksort(A,j+1,der); // ordenamos subarray derecho
+		}
+	
+	private Long getIDOV(CompleteDocuments completeDocuments) {
+		Long IDOV=completeDocuments.getClavilenoid();
+		for (CompleteElement elemetpos : completeDocuments.getDescription()) {
+			if (elemetpos instanceof CompleteTextElement&&elemetpos.getHastype() instanceof CompleteTextElementType&&StaticFuctionsHTMLOdA.isIDOV((CompleteTextElementType)elemetpos.getHastype()))
+				{
+				String IDOVS=((CompleteTextElement) elemetpos).getValue();
+				try {
+					
+					IDOV=Long.parseLong(IDOVS);
+					return IDOV;
+				} catch (Exception e) {
+					System.err.println("error de un entero que es "+IDOVS);
+					e.printStackTrace();
+				
+				}
+				}
+		}
+		return IDOV;
+		
+	}
+
+	@Override
 	protected ArrayList<CompleteGrammar> ProcesaGramaticas(
 			List<CompleteGrammar> metamodelGrammar) {
 		ArrayList<CompleteGrammar> Salida=new ArrayList<CompleteGrammar>();
