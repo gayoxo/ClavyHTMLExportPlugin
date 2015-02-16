@@ -4,13 +4,16 @@
 package fdi.ucm.server.exportparser.html;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -143,16 +146,27 @@ public class HTMLprocess {
 	}
 
 	private void creaLaWeb() {
-		 FileWriter filewriter = null;
-		 PrintWriter printw = null;
+//		 FileWriter filewriter = null;
+//		 PrintWriter printw = null;
 		    
 		try {
-			 filewriter = new FileWriter(SOURCE_FOLDER+"\\index.html");//declarar el archivo
-		     printw = new PrintWriter(filewriter);//declarar un impresor
-		          
-		     printw.println(CodigoHTML.toString());
-		     
-		     printw.close();//cerramos el archivo
+			
+			File fileDir = new File(SOURCE_FOLDER+"\\index.html");
+			 
+			Writer out = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(fileDir), "UTF8"));
+			
+			out.append(CodigoHTML.toString());
+	 
+			out.flush();
+			out.close();
+			
+//			 filewriter = new FileWriter(SOURCE_FOLDER+"\\index.html");//declarar el archivo
+//		     printw = new PrintWriter(filewriter);//declarar un impresor
+//		          
+//		     printw.println(CodigoHTML.toString());
+//		     
+//		     printw.close();//cerramos el archivo
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeErrorException(new Error(e), "Error de archivo");
@@ -166,7 +180,7 @@ public class HTMLprocess {
 	protected void proceraDocumentos(ArrayList<CompleteDocuments> lista,
 			CompleteGrammar completeGrammar) {
 		for (CompleteDocuments completeDocuments : lista) {
-			CodigoHTML.append("<li class=\"doc\"><b> Document: "+completeDocuments.getClavilenoid()+"<b></li>");
+			CodigoHTML.append("<li class=\"doc\"><b> Document: "+completeDocuments.getClavilenoid()+"</b></li>");
 			CodigoHTML.append("<ul>");
 			File IconF=new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid());
 			IconF.mkdirs();

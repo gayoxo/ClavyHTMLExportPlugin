@@ -423,12 +423,18 @@ public class HTMLprocessOdA extends HTMLprocess {
 					
 					String IconPath="";
 					String Link="";
+					String OVID=Linked.getClavilenoid()+"";
 					
 					boolean isAfile=false;
 					
 					if (StaticFuctionsHTMLOdA.isAVirtualObject(Linked) )
+						{
+							for (CompleteElement elemetpos : Linked.getDescription()) {
+								if (elemetpos instanceof CompleteTextElement&&elemetpos.getHastype() instanceof CompleteTextElementType&&StaticFuctionsHTMLOdA.isIDOV((CompleteTextElementType)elemetpos.getHastype()))
+									OVID=((CompleteTextElement) elemetpos).getValue();
+							}
 						IconPath=StaticFunctionsHTML.calculaIconoString(Linked.getIcon());
-						
+						}
 					else if (StaticFuctionsHTMLOdA.isAFile(Linked) )
 					{
 						for (CompleteElement Elem : Linked.getDescription()) {
@@ -521,7 +527,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 					
 					 
 					if (Link.isEmpty())
-						StringSalida.append("<li> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> "+Linked.getDescriptionText()+"</li>");
+						StringSalida.append("<li> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> Objeto Digital:"+OVID+" "+Linked.getDescriptionText()+"</li>");
 					else
 						if (isAfile)
 							StringSalida.append("<li> <img src=\""+
