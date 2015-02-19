@@ -7,7 +7,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -195,8 +198,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 				if (elemetpos instanceof CompleteTextElement&&elemetpos.getHastype() instanceof CompleteTextElementType&&StaticFuctionsHTMLOdA.isIDOV((CompleteTextElementType)elemetpos.getHastype()))
 					IDOV=((CompleteTextElement) elemetpos).getValue();
 			}
-			CodigoHTML.append("<li class=\"doc\"> <b>Objeto Digital: "+IDOV+" </b></li>");
-			CodigoHTML.append("<ul>");
+			CodigoHTML.append("<li class=\"Objeto Document\"> <span class=\"Type Identificador\">Objeto Digital: "+IDOV+" </span></li>");
+			CodigoHTML.append("<ul class=\"List General\">");
 			File IconF=new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid());
 			IconF.mkdirs();
 			
@@ -239,8 +242,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 			 if (Description.isEmpty())
 				 Description="Descripción";
 			 
-			CodigoHTML.append("<li> <b>Icono:</b> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
-			CodigoHTML.append("<li> <b>"+Description+":</b> "+completeDocuments.getDescriptionText()+"</li>");
+			CodigoHTML.append("<li> <span class=\"Type Icono\">Icono:</span> <img class=\"ImagenIcono\"src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
+			CodigoHTML.append("<li> <span class=\"Type "+Description+"\">"+Description+":</span> "+completeDocuments.getDescriptionText()+"</li>");
 			
 			
 			ArrayList<CompleteStructure> OdAElements=findOdAElements(completeGrammar.getSons());
@@ -280,8 +283,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 						StringBuffer StringSalidaFinal = new StringBuffer();
 						if (!ST.isEmpty())
 							{
-							StringSalidaFinal.append("<li> <b>"+((CompleteElementType)completeST).getName()+": </b></li>");
-							StringSalidaFinal.append("<ul>");
+							StringSalidaFinal.append("<li> <span class=\"Type "+((CompleteElementType)completeST).getName()+"\">"+((CompleteElementType)completeST).getName()+": </span></li>");
+							StringSalidaFinal.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
 							StringSalidaFinal.append(ST);
 							StringSalidaFinal.append("</ul>");
 							}
@@ -321,8 +324,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 			
 			if (!HijosSalida.isEmpty())
 			{
-			StringSalida.append("<li><b> "+((CompleteElementType)completeST).getName()+":</b> </li>");
-			StringSalida.append("<ul>");
+			StringSalida.append("<li><span class=\"Type "+((CompleteElementType)completeST).getName()+"\"> "+((CompleteElementType)completeST).getName()+":</span> </li>");
+			StringSalida.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
 			StringSalida.append(HijosSalida);
 			StringSalida.append("</ul>");
 			}
@@ -348,8 +351,46 @@ public class HTMLprocessOdA extends HTMLprocess {
 					{
 					if (Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST))
 						{
-							StringSalida.append("<li><b> "+((CompleteElementType)completeST).getName()+":</b> "+((CompleteTextElement)E).getValue()+"</li>");
-							StringSalida.append("<ul>");
+							String ValueText=((CompleteTextElement)E).getValue();
+							if (StaticFuctionsHTMLOdA.isNumeric(E.getHastype()))
+							{
+								try {
+									Double D=Double.parseDouble(ValueText);
+									ValueText=D.toString();
+								} catch (Exception e2) {
+								}
+							}
+							if (StaticFuctionsHTMLOdA.isDate(E.getHastype()))
+							{
+								try {
+									Date D=null;
+									
+									try {
+										SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+										D= formatter.parse(ValueText);
+									} catch (Exception e2) {
+										
+									}
+									
+									try {
+										SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+										D= formatter.parse(ValueText);
+									} catch (Exception e2) {
+										
+									}
+									
+									if (D!=null)
+									{
+									DateFormat df = new SimpleDateFormat ("yyyy-MM-dd");
+									ValueText=df.format(D);	
+									}
+								} catch (Exception e2) {
+								}
+								
+							}
+							
+							StringSalida.append("<li><span class=\"Type "+((CompleteElementType)completeST).getName()+"\"> "+((CompleteElementType)completeST).getName()+":</span> "+ValueText+"</li>");
+							StringSalida.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
 							Visible=true;
 						}
 					}
@@ -374,8 +415,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 			
 			if (!HijosSalida.isEmpty()&&Vacio&&(Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST)))
 			{
-			StringSalida.append("<li><b> "+((CompleteElementType)completeST).getName()+":</b> </li>");
-			StringSalida.append("<ul>");
+			StringSalida.append("<li> <span class=\"Type "+((CompleteElementType)completeST).getName()+"\"> "+((CompleteElementType)completeST).getName()+":</span> </li>");
+			StringSalida.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
 			Visible=true;
 			}
 		
@@ -527,10 +568,10 @@ public class HTMLprocessOdA extends HTMLprocess {
 					
 					 
 					if (Link.isEmpty())
-						StringSalida.append("<li> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> Objeto Digital:"+OVID+" "+Linked.getDescriptionText()+"</li>");
+						StringSalida.append("<li> <img class=\"ImagenOV\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> <span class=\"Type LinkOD\">Objeto Digital: </span>"+OVID+" "+Linked.getDescriptionText()+"</li>");
 					else
 						if (isAfile)
-							StringSalida.append("<li> <img src=\""+
+							StringSalida.append("<li> <img class=\"ImagenFile\" src=\""+
 						completeDocuments.getClavilenoid()+File.separator+NameS+
 						"\" onmouseover=\"this.width="+width+";this.height="+
 						height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+
@@ -541,7 +582,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 							if (!testLink(Link))
 								Link="http://"+Link;
 							
-							StringSalida.append("<li> <img src=\""+completeDocuments.getClavilenoid()
+							StringSalida.append("<li> <img class=\"URL\" src=\""+completeDocuments.getClavilenoid()
 							
 									+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+
 									";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+
@@ -563,7 +604,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 				
 				if (!HijosSalida.isEmpty())
 					{
-					StringSalida.append("<ul>");
+					StringSalida.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
 					StringSalida.append(HijosSalida);
 					StringSalida.append("</ul>");
 					}
