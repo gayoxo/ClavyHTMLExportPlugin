@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+
 import javax.imageio.ImageIO;
 
 import fdi.ucm.server.exportparser.html.HTMLprocess;
@@ -239,6 +240,9 @@ public class HTMLprocessOdA extends HTMLprocess {
 			
 //			if (width=0)
 			 String Description=StaticFuctionsHTMLOdA.getDescription(completeGrammar);
+			 
+			 Description=ReduceString(Description);
+			 
 			 if (Description.isEmpty())
 				 Description="Descripción";
 			 
@@ -283,8 +287,19 @@ public class HTMLprocessOdA extends HTMLprocess {
 						StringBuffer StringSalidaFinal = new StringBuffer();
 						if (!ST.isEmpty())
 							{
-							StringSalidaFinal.append("<li> <span class=\"Type "+((CompleteElementType)completeST).getName()+"\">"+((CompleteElementType)completeST).getName()+": </span></li>");
-							StringSalidaFinal.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
+							
+							String tipo = ReduceString(((CompleteElementType)completeST).getName());
+							 
+							String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
+							
+							Integer IDT2 = StaticFuctionsHTMLOdA.getIDODAD(((CompleteElementType)completeST));
+							if (IDT2!=null)
+								IDT=IDT2+"";
+							
+							tipo=tipo+" N"+IDT;
+							
+							StringSalidaFinal.append("<li> <span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+": </span></li>");
+							StringSalidaFinal.append("<ul class=\"List "+tipo+"\">");
 							StringSalidaFinal.append(ST);
 							StringSalidaFinal.append("</ul>");
 							}
@@ -302,6 +317,15 @@ public class HTMLprocessOdA extends HTMLprocess {
 		}
 		
 		
+	}
+
+	private String ReduceString(String description) {
+		StringBuffer SB=new StringBuffer();
+		for (int i = 0; i < description.length(); i++) {
+			if ((description.charAt(i)>='A'&&description.charAt(i)<='z')||(description.charAt(i)>='A'&&description.charAt(i)<='Z'))
+				SB.append(description.charAt(i));
+		}
+		return SB.toString();
 	}
 
 	private String processSTDatosYMeta(CompleteStructure completeST,
@@ -324,8 +348,21 @@ public class HTMLprocessOdA extends HTMLprocess {
 			
 			if (!HijosSalida.isEmpty())
 			{
-			StringSalida.append("<li><span class=\"Type "+((CompleteElementType)completeST).getName()+"\"> "+((CompleteElementType)completeST).getName()+":</span> </li>");
-			StringSalida.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
+			
+				String tipo = ReduceString(((CompleteElementType)completeST).getName());
+				 
+				String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
+				
+				Integer IDT2 = StaticFuctionsHTMLOdA.getIDODAD(((CompleteElementType)completeST));
+				if (IDT2!=null)
+					IDT=IDT2+"";
+				
+				tipo=tipo+" N"+IDT;	
+				
+				
+				
+			StringSalida.append("<li><span class=\"Type "+tipo+"\"> "+((CompleteElementType)completeST).getName()+":</span> </li>");
+			StringSalida.append("<ul class=\"List "+tipo+"\">");
 			StringSalida.append(HijosSalida);
 			StringSalida.append("</ul>");
 			}
@@ -389,8 +426,21 @@ public class HTMLprocessOdA extends HTMLprocess {
 								
 							}
 							
-							StringSalida.append("<li><span class=\"Type "+((CompleteElementType)completeST).getName()+"\"> "+((CompleteElementType)completeST).getName()+":</span> "+ValueText+"</li>");
-							StringSalida.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
+							
+
+							String tipo = ReduceString(((CompleteElementType)completeST).getName());
+							 
+							String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
+							
+							Integer IDT2 = StaticFuctionsHTMLOdA.getIDODAD(((CompleteElementType)completeST));
+							if (IDT2!=null)
+								IDT=IDT2+"";
+							
+							tipo=tipo+" N"+IDT;
+							
+							
+							StringSalida.append("<li><span class=\"Type "+tipo+"\"> "+((CompleteElementType)completeST).getName()+":</span> "+ValueText+"</li>");
+							StringSalida.append("<ul class=\"List "+tipo+"\">");
 							Visible=true;
 						}
 					}
@@ -415,8 +465,21 @@ public class HTMLprocessOdA extends HTMLprocess {
 			
 			if (!HijosSalida.isEmpty()&&Vacio&&(Administrador||StaticFuctionsHTMLOdA.getVisible((CompleteElementType)completeST)))
 			{
-			StringSalida.append("<li> <span class=\"Type "+((CompleteElementType)completeST).getName()+"\"> "+((CompleteElementType)completeST).getName()+":</span> </li>");
-			StringSalida.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
+				
+
+				String tipo = ReduceString(((CompleteElementType)completeST).getName());
+				 
+				String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
+				
+				Integer IDT2 = StaticFuctionsHTMLOdA.getIDODAD(((CompleteElementType)completeST));
+				if (IDT2!=null)
+					IDT=IDT2+"";
+				
+				tipo=tipo+" N"+IDT;
+				
+				
+			StringSalida.append("<li> <span class=\"Type "+tipo+"\"> "+((CompleteElementType)completeST).getName()+":</span> </li>");
+			StringSalida.append("<ul class=\"List "+tipo+"\">");
 			Visible=true;
 			}
 		
