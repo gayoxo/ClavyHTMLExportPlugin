@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -56,6 +57,7 @@ public class HTMLprocess {
 	protected StringBuffer CodigoHTML;
 	protected CompleteLogAndUpdates CL;
 	private static final Pattern regexAmbito = Pattern.compile("^(ht|f)tp(s)*://(.)*$");
+	protected HashMap<String,CompleteStructure> NameCSS;
 
 	public HTMLprocess(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL) {
 		ListaDeDocumentos=listaDeDocumentos;
@@ -63,6 +65,7 @@ public class HTMLprocess {
 		SOURCE_FOLDER=sOURCE_FOLDER;
 		CL=cL;
 		
+		NameCSS=new HashMap<String,CompleteStructure>();
 	}
 
 	public void preocess() {
@@ -276,11 +279,25 @@ public class HTMLprocess {
 		if (completeST instanceof CompleteElementType)
 			{
 			CompleteElement E=findElem(completeST,completeDocuments.getDescription(),ambitos);
+			
+			
+			String tipo = ReduceString(((CompleteElementType)completeST).getName());
+			
+			if (NameCSS.get(tipo)!=null&&NameCSS.get(tipo)!=completeST)
+				tipo=CreateNameCSS(tipo,completeST);
+			
+			NameCSS.put(tipo,completeST);
+			 
+			String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
+			
+			tipo=tipo+" N"+IDT;
+			
+			
 			if (E!=null)
 				{
 				Vacio=false;
 				if (E instanceof CompleteTextElement)
-					StringSalida.append("<li> <span class=\"Type "+((CompleteElementType)completeST).getName()+"\">"+((CompleteElementType)completeST).getName()+":</span> "+((CompleteTextElement)E).getValue()+"</li>");
+					StringSalida.append("<li> <span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> "+((CompleteTextElement)E).getValue()+"</li>");
 				else if (E instanceof CompleteLinkElement)
 					{
 					CompleteDocuments Linked=((CompleteLinkElement) E).getValue();
@@ -325,7 +342,7 @@ public class HTMLprocess {
 					 heightmini= (50*height)/width;
 					
 					
-					StringSalida.append("<li> <<span class=\"Type "+((CompleteElementType)completeST).getName()+"\">"+((CompleteElementType)completeST).getName()+": </span> Document Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /> "+Linked.getDescriptionText()+"</li>");
+					StringSalida.append("<li> <<span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+": </span> Document Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /> "+Linked.getDescriptionText()+"</li>");
 					}
 				else if (E instanceof CompleteResourceElementURL)
 					{
@@ -333,7 +350,7 @@ public class HTMLprocess {
 							
 							if (!testLink(Link))
 								Link="http://"+Link;
-					StringSalida.append("<li> <span class=\"Type "+((CompleteElementType)completeST).getName()+"\">"+((CompleteElementType)completeST).getName()+": </span>"+Link+"</li>");
+					StringSalida.append("<li> <span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+": </span>"+Link+"</li>");
 					
 					}
 				else if (E instanceof CompleteResourceElementFile)
@@ -378,7 +395,7 @@ public class HTMLprocess {
 					 widthmini= 50;
 					 heightmini= (50*height)/width;
 					
-					StringSalida.append("<li> <span class=\"Type "+((CompleteElementType)completeST).getName()+"\">"+((CompleteElementType)completeST).getName()+":</span> " +
+					StringSalida.append("<li> <span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> " +
 							"File Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\"" +
 									" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" />" +
 									"<a href=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" target=\"_blank\">"+
@@ -406,13 +423,13 @@ public class HTMLprocess {
 			
 			if (!HijosSalida.isEmpty()&&Vacio)
 			{
-			StringSalida.append("<li> <span class=\"Type "+((CompleteElementType)completeST).getName()+"\">"+((CompleteElementType)completeST).getName()+":</span> </li>");
+			StringSalida.append("<li> <span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> </li>");
 			
 			}
 		
 		if (!HijosSalida.isEmpty())
 			{
-			StringSalida.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
+			StringSalida.append("<ul class=\"List "+tipo+"\">");
 			StringSalida.append(HijosSalida);
 			StringSalida.append("</ul>");
 			}
@@ -526,6 +543,25 @@ public class HTMLprocess {
 			return true;
 		 Matcher matcher = regexAmbito.matcher(baseURLOda2);
 		return matcher.matches();
+	}
+	
+	
+	protected String ReduceString(String description) {
+		StringBuffer SB=new StringBuffer();
+		for (int i = 0; i < description.length() && SB.length()<25; i++) {
+			if ((description.charAt(i)>='A'&&description.charAt(i)<='z')||(description.charAt(i)>='A'&&description.charAt(i)<='Z'))
+				SB.append(description.charAt(i));
+		}
+		return SB.toString();
+	}
+	
+	
+	protected String CreateNameCSS(String tipo, CompleteStructure completeST) {
+		int i=0;
+		String Base=tipo;
+		while (NameCSS.get(Base+i)!=null&&NameCSS.get(Base+i)!=completeST)
+			i++;
+		return Base+i;
 	}
 
 }

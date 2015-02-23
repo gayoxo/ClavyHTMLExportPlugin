@@ -43,6 +43,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 	protected static final String EXPORTTEXT = "Resultado de Exportacion en HTML";
 	private HashSet<Long> AdministradorListaDocumentos;
 	private HashSet<Long> AdministradorListaStructura;
+	
 	private boolean Administrador;
 
 
@@ -71,6 +72,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 				AdministradorListaStructura.add(long1);
 		}
 
+		
 	}
 	
 	@Override
@@ -192,6 +194,17 @@ public class HTMLprocessOdA extends HTMLprocess {
 	@Override
 	protected void proceraDocumentos(ArrayList<CompleteDocuments> lista,
 			CompleteGrammar completeGrammar) {
+		
+		 String Description=StaticFuctionsHTMLOdA.getDescription(completeGrammar);
+		 
+		  if (Description.isEmpty())
+			 Description="Descripción";
+		  
+		 String DescriptionR = ReduceString(Description);
+		 CompleteElementType  ReferenciaDesc=new CompleteElementType(DescriptionR, completeGrammar);
+			
+			NameCSS.put(DescriptionR, ReferenciaDesc);
+		
 		for (CompleteDocuments completeDocuments : lista) {
 			
 			String IDOV=completeDocuments.getClavilenoid()+"";
@@ -239,15 +252,11 @@ public class HTMLprocessOdA extends HTMLprocess {
 			 heightmini= (50*height)/width;
 			
 //			if (width=0)
-			 String Description=StaticFuctionsHTMLOdA.getDescription(completeGrammar);
+			
 			 
-			 Description=ReduceString(Description);
-			 
-			 if (Description.isEmpty())
-				 Description="Descripción";
 			 
 			CodigoHTML.append("<li> <span class=\"Type Icono\">Icono:</span> <img class=\"ImagenIcono\"src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
-			CodigoHTML.append("<li> <span class=\"Type "+Description+"\">"+Description+":</span> "+completeDocuments.getDescriptionText()+"</li>");
+			CodigoHTML.append("<li> <span class=\"Type "+DescriptionR+"\">"+Description+":</span> "+completeDocuments.getDescriptionText()+"</li>");
 			
 			
 			ArrayList<CompleteStructure> OdAElements=findOdAElements(completeGrammar.getSons());
@@ -289,6 +298,11 @@ public class HTMLprocessOdA extends HTMLprocess {
 							{
 							
 							String tipo = ReduceString(((CompleteElementType)completeST).getName());
+							
+							if (NameCSS.get(tipo)!=null&&NameCSS.get(tipo)!=completeST)
+								tipo=CreateNameCSS(tipo,completeST);
+							
+							NameCSS.put(tipo,completeST);
 							 
 							String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
 							
@@ -319,14 +333,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 		
 	}
 
-	private String ReduceString(String description) {
-		StringBuffer SB=new StringBuffer();
-		for (int i = 0; i < description.length(); i++) {
-			if ((description.charAt(i)>='A'&&description.charAt(i)<='z')||(description.charAt(i)>='A'&&description.charAt(i)<='Z'))
-				SB.append(description.charAt(i));
-		}
-		return SB.toString();
-	}
+	
 
 	private String processSTDatosYMeta(CompleteStructure completeST,
 			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
@@ -350,6 +357,11 @@ public class HTMLprocessOdA extends HTMLprocess {
 			{
 			
 				String tipo = ReduceString(((CompleteElementType)completeST).getName());
+				
+				if (NameCSS.get(tipo)!=null&&NameCSS.get(tipo)!=completeST)
+					tipo=CreateNameCSS(tipo,completeST);
+				
+				NameCSS.put(tipo,completeST);
 				 
 				String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
 				
@@ -373,6 +385,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 		
 	}
 	
+	
+
 	private String processSTResto(CompleteStructure completeST,
 			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
 		StringBuffer StringSalida=new StringBuffer();
@@ -429,6 +443,11 @@ public class HTMLprocessOdA extends HTMLprocess {
 							
 
 							String tipo = ReduceString(((CompleteElementType)completeST).getName());
+							
+							if (NameCSS.get(tipo)!=null&&NameCSS.get(tipo)!=completeST)
+								tipo=CreateNameCSS(tipo,completeST);
+							
+							NameCSS.put(tipo,completeST);
 							 
 							String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
 							
@@ -468,6 +487,11 @@ public class HTMLprocessOdA extends HTMLprocess {
 				
 
 				String tipo = ReduceString(((CompleteElementType)completeST).getName());
+				
+				if (NameCSS.get(tipo)!=null&&NameCSS.get(tipo)!=completeST)
+					tipo=CreateNameCSS(tipo,completeST);
+				
+				NameCSS.put(tipo,completeST);
 				 
 				String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
 				
@@ -667,7 +691,23 @@ public class HTMLprocessOdA extends HTMLprocess {
 				
 				if (!HijosSalida.isEmpty())
 					{
-					StringSalida.append("<ul class=\"List "+((CompleteElementType)completeST).getName()+"\">");
+					
+					String tipo = ReduceString(((CompleteElementType)completeST).getName());
+					
+					if (NameCSS.get(tipo)!=null&&NameCSS.get(tipo)!=completeST)
+						tipo=CreateNameCSS(tipo,completeST);
+					
+					NameCSS.put(tipo,completeST);
+					 
+					String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
+					
+					Integer IDT2 = StaticFuctionsHTMLOdA.getIDODAD(((CompleteElementType)completeST));
+					if (IDT2!=null)
+						IDT=IDT2+"";
+					
+					tipo=tipo+" N"+IDT;
+					
+					StringSalida.append("<ul class=\"List "+tipo+"\">");
 					StringSalida.append(HijosSalida);
 					StringSalida.append("</ul>");
 					}
