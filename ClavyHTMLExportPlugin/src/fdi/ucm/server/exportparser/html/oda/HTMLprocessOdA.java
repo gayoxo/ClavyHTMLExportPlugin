@@ -446,6 +446,15 @@ public class HTMLprocessOdA extends HTMLprocess {
 									
 									if (fecha==null)
 										try {
+											SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+											fecha = formatoDelTexto.parse(ValueText);
+										} catch (Exception e) {
+											//Nada
+											fecha = null;
+										}
+									
+									if (fecha==null)
+										try {
 											SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyyMMdd");
 											fecha = formatoDelTexto.parse(ValueText);
 										} catch (Exception e) {
@@ -475,6 +484,10 @@ public class HTMLprocessOdA extends HTMLprocess {
 									{
 									DateFormat df = new SimpleDateFormat ("dd/MM/yyyy");
 									ValueText=df.format(fecha);	
+									}
+									else
+									{
+										CL.getLogLines().add("Problemas al parsear la fecha  " + ValueText + ",  solo formatos compatibles yyyy-MM-dd HH:mm:ss ó yyyy-MM-dd HH:mm ó yyyy-MM-dd ó yyyyMMdd ó dd/MM/yyyy ó dd/MM/yy");
 									}
 								} catch (Exception e2) {
 								}
