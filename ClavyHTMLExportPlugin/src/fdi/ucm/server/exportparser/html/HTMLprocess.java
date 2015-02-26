@@ -85,7 +85,7 @@ public class HTMLprocess {
 //		CodigoHTML.append("</style>");
 		CodigoHTML.append("</head>");  
 		CodigoHTML.append("<body>");
-		CodigoHTML.append("<ul class\"List LBody\">");
+		CodigoHTML.append("<ul class\"_List LBody\">");
 		
 		
 		ArrayList<CompleteGrammar> GramaticasAProcesar=ProcesaGramaticas(Salvar.getMetamodelGrammar());
@@ -146,8 +146,10 @@ public class HTMLprocess {
 			 filewriter = new FileWriter(SOURCE_FOLDER+"\\style.css");//declarar el archivo
 		     printw = new PrintWriter(filewriter);//declarar un impresor
 		          
-		     printw.println("li.Document {color: blue;}");
-		     printw.println("span.Type {font-weight: bold;}");
+		     printw.println("li._Document {color: blue;}");
+		     printw.println("span._Type {font-weight: bold;}");
+		     printw.println("ul._List {}");
+		     printw.println("span._Value {}");
 		     
 		     printw.close();//cerramos el archivo
 		} catch (Exception e) {
@@ -192,8 +194,8 @@ public class HTMLprocess {
 	protected void proceraDocumentos(ArrayList<CompleteDocuments> lista,
 			CompleteGrammar completeGrammar) {
 		for (CompleteDocuments completeDocuments : lista) {
-			CodigoHTML.append("<li class=\"Document\"><span class=\"Type Identificador\"> Document: "+completeDocuments.getClavilenoid()+"</span></li>");
-			CodigoHTML.append("<ul class=\"List General\">");
+			CodigoHTML.append("<li class=\"_Document\"><span class=\"_Type Ident N_0\"> Document: </span><span class=\"Ident _Value N_0V\">"+completeDocuments.getClavilenoid()+"</span></li>");
+			CodigoHTML.append("<ul class=\"_List General\">");
 			File IconF=new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid());
 			IconF.mkdirs();
 			
@@ -234,8 +236,8 @@ public class HTMLprocess {
 //			if (width=0)
 			
 			
-			CodigoHTML.append("<li> <span class=\"Type Icon\">Icon:</span> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
-			CodigoHTML.append("<li> <span class=\"Type Description\">Description:</span> "+completeDocuments.getDescriptionText()+"</li>");
+			CodigoHTML.append("<li> <span class=\"_Type Icon N_1\">Icon:</span> <img class=\"Icon _Value N_1V\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
+			CodigoHTML.append("<li> <span class=\"_Type Description N_2\">Description:</span> <span class=\"Description _Value N_0V\">"+completeDocuments.getDescriptionText()+"</span></li>");
 			for (CompleteStructure completeST : completeGrammar.getSons()) {
 				String Salida = processST(completeST,completeDocuments,new ArrayList<Integer>());
 				if (!Salida.isEmpty())
@@ -297,7 +299,7 @@ public class HTMLprocess {
 				{
 				Vacio=false;
 				if (E instanceof CompleteTextElement)
-					StringSalida.append("<li> <span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> "+((CompleteTextElement)E).getValue()+"</li>");
+					StringSalida.append("<li> <span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> <span class=\""+tipo+"V"+" _Value\">"+((CompleteTextElement)E).getValue()+"</span> </li>");
 				else if (E instanceof CompleteLinkElement)
 					{
 					CompleteDocuments Linked=((CompleteLinkElement) E).getValue();
@@ -342,7 +344,13 @@ public class HTMLprocess {
 					 heightmini= (50*height)/width;
 					
 					
-					StringSalida.append("<li> <<span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+": </span> Document Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /> "+Linked.getDescriptionText()+"</li>");
+					StringSalida.append("<li> <<span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+
+							": </span> Document Linked -> <img class=\"_ImagenOV "+tipo+"V \" src=\""+
+							completeDocuments.getClavilenoid()+File.separator+NameS+
+							"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+
+							";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /> "+
+							"<span class=\""+tipo+"V _ClavyID _Value\">" +Linked.getClavilenoid()+"</span>"+
+							"<span class=\""+tipo+"V _DescriptionRel _Value\">" +Linked.getDescriptionText()+"</span></li>");
 					}
 				else if (E instanceof CompleteResourceElementURL)
 					{
@@ -350,7 +358,9 @@ public class HTMLprocess {
 							
 							if (!testLink(Link))
 								Link="http://"+Link;
-					StringSalida.append("<li> <span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+": </span>"+Link+"</li>");
+					StringSalida.append("<li> <span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+": </span>"
+									+"<a class=\"_LinkedRef "+tipo+"V "+tipo+"A \" href=\""+Link+"\" target=\"_blank\">"
+									+Link+"</a></li>");
 					
 					}
 				else if (E instanceof CompleteResourceElementFile)
@@ -395,10 +405,10 @@ public class HTMLprocess {
 					 widthmini= 50;
 					 heightmini= (50*height)/width;
 					
-					StringSalida.append("<li> <span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> " +
-							"File Linked -> <img src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\"" +
+					StringSalida.append("<li> <span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> " +
+							"File Linked -> <img class=\"_ImagenFile "+tipo+"V \" class=\"ImagenOV\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\"" +
 									" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" />" +
-									"<a href=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" target=\"_blank\">"+
+									"<a class=\"_LinkedRef "+tipo+"V "+tipo+"A  \" href=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" target=\"_blank\">"+
 									NameS+"</a></li>");				
 
 					}
@@ -423,13 +433,13 @@ public class HTMLprocess {
 			
 			if (!HijosSalida.isEmpty()&&Vacio)
 			{
-			StringSalida.append("<li> <span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> </li>");
+			StringSalida.append("<li> <span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> </li>");
 			
 			}
 		
 		if (!HijosSalida.isEmpty())
 			{
-			StringSalida.append("<ul class=\"List "+tipo+"\">");
+			StringSalida.append("<ul class=\"_List "+tipo+"\">");
 			StringSalida.append(HijosSalida);
 			StringSalida.append("</ul>");
 			}

@@ -212,8 +212,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 				if (elemetpos instanceof CompleteTextElement&&elemetpos.getHastype() instanceof CompleteTextElementType&&StaticFuctionsHTMLOdA.isIDOV((CompleteTextElementType)elemetpos.getHastype()))
 					IDOV=((CompleteTextElement) elemetpos).getValue();
 			}
-			CodigoHTML.append("<li class=\"Objeto Document\"> <span class=\"Type Identificador\">Objeto Digital: "+IDOV+" </span></li>");
-			CodigoHTML.append("<ul class=\"List General\">");
+			CodigoHTML.append("<li class=\"_Document Objetos N_R\"> <span class=\"_Type Identificador N_0\">Objeto Digital: </span><span class=\"Ident _Value N_0V\">"+IDOV+" </span></li>");
+			CodigoHTML.append("<ul class=\"_List General\">");
 			File IconF=new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid());
 			IconF.mkdirs();
 			
@@ -255,8 +255,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 			
 			 
 			 
-			CodigoHTML.append("<li> <span class=\"Type Icono\">Icono:</span> <img class=\"ImagenIcono\"src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
-			CodigoHTML.append("<li> <span class=\"Type "+DescriptionR+"\">"+Description+":</span> "+completeDocuments.getDescriptionText()+"</li>");
+			CodigoHTML.append("<li> <span class=\"_Type Icono N_1\">Icono:</span> <img class=\"ImagenIcono _Value N_1V\"src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
+			CodigoHTML.append("<li> <span class=\"_Type "+DescriptionR+"\">"+Description+":</span> <span class=\""+DescriptionR+"V \">"+completeDocuments.getDescriptionText()+"</span></li>");
 			
 			
 			ArrayList<CompleteStructure> OdAElements=findOdAElements(completeGrammar.getSons());
@@ -312,8 +312,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 							
 							tipo=tipo+" N"+IDT;
 							
-							StringSalidaFinal.append("<li> <span class=\"Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+": </span></li>");
-							StringSalidaFinal.append("<ul class=\"List "+tipo+"\">");
+							StringSalidaFinal.append("<li> <span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+": </span></li>");
+							StringSalidaFinal.append("<ul class=\"_List "+tipo+"\">");
 							StringSalidaFinal.append(ST);
 							StringSalidaFinal.append("</ul>");
 							}
@@ -373,8 +373,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 				
 				
 				
-			StringSalida.append("<li><span class=\"Type "+tipo+"\"> "+((CompleteElementType)completeST).getName()+":</span> </li>");
-			StringSalida.append("<ul class=\"List "+tipo+"\">");
+			StringSalida.append("<li><span class=\"_Type "+tipo+"\"> "+((CompleteElementType)completeST).getName()+":</span> </li>");
+			StringSalida.append("<ul class=\"_List "+tipo+"\">");
 			StringSalida.append(HijosSalida);
 			StringSalida.append("</ul>");
 			}
@@ -408,32 +408,73 @@ public class HTMLprocessOdA extends HTMLprocess {
 								try {
 									Double D=Double.parseDouble(ValueText);
 									ValueText=D.toString();
+									
+									int p_ent= (int)D.intValue();
+									 
+									double p_dec= D - p_ent;
+									
+									if (p_dec==0)
+										ValueText=Integer.toString(p_ent);
+								
 								} catch (Exception e2) {
 								}
 							}
+							else
 							if (StaticFuctionsHTMLOdA.isDate(E.getHastype()))
 							{
 								try {
-									Date D=null;
+
 									
+									Date fecha = null;
+									//yyyy-MM-dd HH:mm:ss
 									try {
-										SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-										D= formatter.parse(ValueText);
-									} catch (Exception e2) {
-										
+										SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+										fecha = formatoDelTexto.parse(ValueText);
+									} catch (Exception e) {
+										//Nada
+										fecha = null;
 									}
 									
-									try {
-										SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-										D= formatter.parse(ValueText);
-									} catch (Exception e2) {
-										
-									}
+									if (fecha==null)
+										try {
+											SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+											fecha = formatoDelTexto.parse(ValueText);
+										} catch (Exception e) {
+											//Nada
+											fecha = null;
+										}
 									
-									if (D!=null)
+									if (fecha==null)
+										try {
+											SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyyMMdd");
+											fecha = formatoDelTexto.parse(ValueText);
+										} catch (Exception e) {
+											//Nada
+											fecha = null;
+										}
+									
+									if (fecha==null)
+										try {
+											SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+											fecha = formatoDelTexto.parse(ValueText);
+										} catch (Exception e) {
+											//Nada
+											fecha = null;
+										}
+									
+									if (fecha==null)
+										try {
+											SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yy");
+											fecha = formatoDelTexto.parse(ValueText);
+										} catch (Exception e) {
+											//Nada
+											fecha = null;
+										}
+									
+									if (fecha!=null)
 									{
-									DateFormat df = new SimpleDateFormat ("yyyy-MM-dd");
-									ValueText=df.format(D);	
+									DateFormat df = new SimpleDateFormat ("dd/MM/yyyy");
+									ValueText=df.format(fecha);	
 									}
 								} catch (Exception e2) {
 								}
@@ -458,8 +499,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 							tipo=tipo+" N"+IDT;
 							
 							
-							StringSalida.append("<li><span class=\"Type "+tipo+"\"> "+((CompleteElementType)completeST).getName()+":</span> "+ValueText+"</li>");
-							StringSalida.append("<ul class=\"List "+tipo+"\">");
+							StringSalida.append("<li><span class=\"_Type "+tipo+"\"> "+((CompleteElementType)completeST).getName()+":</span> <span class=\"_Value "+tipo+"V \">"+ValueText+"</span></li>");
+							StringSalida.append("<ul class=\"_List "+tipo+"\">");
 							Visible=true;
 						}
 					}
@@ -502,8 +543,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 				tipo=tipo+" N"+IDT;
 				
 				
-			StringSalida.append("<li> <span class=\"Type "+tipo+"\"> "+((CompleteElementType)completeST).getName()+":</span> </li>");
-			StringSalida.append("<ul class=\"List "+tipo+"\">");
+			StringSalida.append("<li> <span class=\"_Type "+tipo+"\"> "+((CompleteElementType)completeST).getName()+":</span> </li>");
+			StringSalida.append("<ul class=\"_List "+tipo+"\">");
 			Visible=true;
 			}
 		
@@ -539,6 +580,23 @@ public class HTMLprocessOdA extends HTMLprocess {
 		StringBuffer StringSalida=new StringBuffer();
 		if (completeST instanceof CompleteElementType)
 			{
+			
+			String tipo = ReduceString(((CompleteElementType)completeST).getName());
+			
+			if (NameCSS.get(tipo)!=null&&NameCSS.get(tipo)!=completeST)
+				tipo=CreateNameCSS(tipo,completeST);
+			
+			NameCSS.put(tipo,completeST);
+			 
+			String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
+			
+			Integer IDT2 = StaticFuctionsHTMLOdA.getIDODAD(((CompleteElementType)completeST));
+			if (IDT2!=null)
+				IDT=IDT2+"";
+			
+			tipo=tipo+" N"+IDT;
+			
+			
 			CompleteElement E=findElem(completeST,completeDocuments.getDescription(),ambitos);
 			if (E!=null)
 				{
@@ -655,25 +713,28 @@ public class HTMLprocessOdA extends HTMLprocess {
 					
 					 
 					if (Link.isEmpty())
-						StringSalida.append("<li> <img class=\"ImagenOV\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> <span class=\"Type LinkOD\">Objeto Digital: </span>"+OVID+" "+Linked.getDescriptionText()+"</li>");
+						StringSalida.append("<li> <img class=\"_ImagenOV "+tipo+"\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height
+								+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+
+								IconPath+"\" /> <span class=\"Type LinkOD\">Objeto Digital: </span>"
+								+"<span class=\"_OdAIDOV\">"+OVID+"</span> <span class=\""+tipo+"V _OdADescriptionRel _Value\">"+Linked.getDescriptionText()+"</span></li>");
 					else
 						if (isAfile)
-							StringSalida.append("<li> <img class=\"ImagenFile\" src=\""+
+							StringSalida.append("<li> <img class=\"_ImagenFile "+tipo+"\" src=\""+
 						completeDocuments.getClavilenoid()+File.separator+NameS+
 						"\" onmouseover=\"this.width="+width+";this.height="+
 						height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+
-						"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> <a href=\""+completeDocuments.getClavilenoid()+File.separator+NameSL+"\" target=\"_blank\">"+
+						"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> <a class=\"_LinkedRef  "+tipo+"V "+tipo+"A \" href=\""+completeDocuments.getClavilenoid()+File.separator+NameSL+"\" target=\"_blank\">"+
 						NameSL+"</a></li>");
 						else
 							{
 							if (!testLink(Link))
 								Link="http://"+Link;
 							
-							StringSalida.append("<li> <img class=\"URL\" src=\""+completeDocuments.getClavilenoid()
+							StringSalida.append("<li> <img class=\"_URL "+tipo+"\" src=\""+completeDocuments.getClavilenoid()
 							
 									+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+
 									";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+
-									"\" /> <a href=\""+Link+"\" target=\"_blank\">"+Link+"</a></li>");
+									"\" /> <a class=\"_LinkedRef "+tipo+"V "+tipo+"A \" href=\""+Link+"\" target=\"_blank\">"+Link+"</a></li>");
 							}
 					
 					StringBuffer Hijos=new StringBuffer();
@@ -692,22 +753,9 @@ public class HTMLprocessOdA extends HTMLprocess {
 				if (!HijosSalida.isEmpty())
 					{
 					
-					String tipo = ReduceString(((CompleteElementType)completeST).getName());
 					
-					if (NameCSS.get(tipo)!=null&&NameCSS.get(tipo)!=completeST)
-						tipo=CreateNameCSS(tipo,completeST);
 					
-					NameCSS.put(tipo,completeST);
-					 
-					String IDT=((CompleteElementType)completeST).getClavilenoid()+"";
-					
-					Integer IDT2 = StaticFuctionsHTMLOdA.getIDODAD(((CompleteElementType)completeST));
-					if (IDT2!=null)
-						IDT=IDT2+"";
-					
-					tipo=tipo+" N"+IDT;
-					
-					StringSalida.append("<ul class=\"List "+tipo+"\">");
+					StringSalida.append("<ul class=\"_List "+tipo+"\">");
 					StringSalida.append(HijosSalida);
 					StringSalida.append("</ul>");
 					}
