@@ -234,10 +234,12 @@ public class HTMLprocessOdA extends HTMLprocess {
 				CL.getLogLines().add("Error en copia del icono con url ->>"+completeDocuments.getIcon()+" not encontrado o restringido");
 			}
 			
-			int width= 50;
-			int height=50;
-			int widthmini= 50;
-			int heightmini=50;
+			int width= 150;
+			int height=150;
+			int widthmini= 150;
+			int heightmini=150;
+			int widthmaxi= 150;
+			int heightmaxi=150;
 			
 			try {
 				BufferedImage bimg = ImageIO.read(new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS));
@@ -248,14 +250,17 @@ public class HTMLprocessOdA extends HTMLprocess {
 			}
 			
 			
-			 widthmini= 50;
-			 heightmini= (50*height)/width;
+			 widthmini= 150;
+			 heightmini= (150*height)/width;
+			 
+			 widthmaxi= 600;
+			 heightmaxi= (600*height)/width;
 			
 //			if (width=0)
 			
 			 
 			 
-			CodigoHTML.append("<li> <span class=\"_Type Icono N_1\">Icono:</span> <img class=\"ImagenIcono _Value N_1V\"src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
+			CodigoHTML.append("<li> <span class=\"_Type Icono N_1\">Icono:</span> <img class=\"ImagenIcono _Value N_1V\"src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+widthmaxi+";this.height="+heightmaxi+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
 			CodigoHTML.append("<li> <span class=\"_Type "+DescriptionR+"\">"+Description+":</span> <span class=\""+DescriptionR+"V \">"+completeDocuments.getDescriptionText()+"</span></li>");
 			
 			
@@ -707,10 +712,12 @@ public class HTMLprocessOdA extends HTMLprocess {
 					
 					
 					
-					int width= 50;
-					int height=50;
-					int widthmini= 50;
-					int heightmini=50;
+					int width= 150;
+					int height=150;
+					int widthmini= 150;
+					int heightmini=150;
+					int widthmaxi= 150;
+					int heightmaxi=150;
 					
 					try {
 						BufferedImage bimg = ImageIO.read(new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS));
@@ -721,12 +728,15 @@ public class HTMLprocessOdA extends HTMLprocess {
 					}
 					
 					
-					 widthmini= 50;
-					 heightmini= (50*height)/width;
+					 widthmini= 150;
+					 heightmini= (150*height)/width;
+					 
+					 widthmaxi= 600;
+					 heightmaxi= (600*height)/width;
 					
 					 
 					if (Link.isEmpty())
-						StringSalida.append("<li> <img class=\"_ImagenOV "+tipo+"\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height
+						StringSalida.append("<li> <img class=\"_ImagenOV "+tipo+"\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+widthmaxi+";this.height="+heightmaxi
 								+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+
 								IconPath+"\" /> <span class=\"Type LinkOD\">Objeto Digital: </span>"
 								+"<span class=\"_OdAIDOV\">"+OVID+"</span> <span class=\""+tipo+"V _OdADescriptionRel _Value\">"+Linked.getDescriptionText()+"</span></li>");
@@ -734,8 +744,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 						if (isAfile)
 							StringSalida.append("<li> <img class=\"_ImagenFile "+tipo+"\" src=\""+
 						completeDocuments.getClavilenoid()+File.separator+NameS+
-						"\" onmouseover=\"this.width="+width+";this.height="+
-						height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+
+						"\" onmouseover=\"this.width="+widthmaxi+";this.height="+
+						heightmaxi+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+
 						"\" height=\""+heightmini+"\" alt=\""+IconPath+"\" /> <a class=\"_LinkedRef  "+tipo+"V "+tipo+"A \" href=\""+completeDocuments.getClavilenoid()+File.separator+NameSL+"\" target=\"_blank\">"+
 						NameSL+"</a></li>");
 						else
@@ -745,7 +755,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 							
 							StringSalida.append("<li> <img class=\"_URL "+tipo+"\" src=\""+completeDocuments.getClavilenoid()
 							
-									+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+
+									+File.separator+NameS+"\" onmouseover=\"this.width="+widthmaxi+";this.height="+heightmaxi+";\" onmouseout=\"this.width="+widthmini+
 									";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+IconPath+
 									"\" /> <a class=\"_LinkedRef "+tipo+"V "+tipo+"A \" href=\""+Link+"\" target=\"_blank\">"+Link+"</a></li>");
 							}
