@@ -307,7 +307,9 @@ public class HTMLprocess {
 					File IconF=new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid());
 					IconF.mkdirs();
 					
-					
+					if (Linked!=null)
+					{
+						
 					String Path=StaticFunctionsHTML.calculaIconoString(Linked.getIcon());
 					
 					String[] spliteStri=Path.split("/");
@@ -351,6 +353,7 @@ public class HTMLprocess {
 							";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /> "+
 							"<span class=\""+tipo+"V _ClavyID _Value\">" +Linked.getClavilenoid()+"</span>"+
 							"<span class=\""+tipo+"V _DescriptionRel _Value\">" +Linked.getDescriptionText()+"</span></li>");
+					}
 					}
 				else if (E instanceof CompleteResourceElementURL)
 					{
@@ -533,7 +536,7 @@ public class HTMLprocess {
 			CompleteGrammar completeGrammar) {
 		ArrayList<CompleteDocuments> Salida=new ArrayList<CompleteDocuments>();
 		for (CompleteDocuments iterable_element : Salvar.getEstructuras()) {
-			if (ListaDeDocumentos.contains(iterable_element.getClavilenoid())&&iterable_element.getDocument().getClavilenoid().equals(completeGrammar.getClavilenoid()))
+			if (ListaDeDocumentos.isEmpty()||(ListaDeDocumentos.contains(iterable_element.getClavilenoid())&&iterable_element.getDocument().getClavilenoid().equals(completeGrammar.getClavilenoid())))
 				Salida.add(iterable_element);
 		}
 		return Salida;
