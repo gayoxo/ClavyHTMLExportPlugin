@@ -57,8 +57,8 @@ public class HTMLSaveCollection extends SaveCollection {
 			
 			CompleteLogAndUpdates CL=new CompleteLogAndUpdates();
 			
-			if (!ListaDeDocumentos.isEmpty())
-			{
+//			if (!ListaDeDocumentos.isEmpty())
+//			{
 			
 			Path=PathTemporalFiles;
 			SOURCE_FOLDER=Path+"HTML"+File.separator;
@@ -85,12 +85,12 @@ public class HTMLSaveCollection extends SaveCollection {
 			}
 
 			return CL;
-			}
-			else 
-			{
-				CL.getLogLines().add("Error in list, numeber of documents empty");
-				return CL;
-			}
+//			}
+//			else 
+//			{
+//				CL.getLogLines().add("Error in list, numeber of documents empty");
+//				return CL;
+//			}
 
 		} catch (CompleteImportRuntimeException e) {
 			System.err.println("Exception HTML " +e.getGENERIC_ERROR());
@@ -124,7 +124,7 @@ public class HTMLSaveCollection extends SaveCollection {
 		if (Parametros==null)
 		{
 			ArrayList<ImportExportPair> ListaCampos=new ArrayList<ImportExportPair>();
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Number of Documents ids to export separated by ','"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Documents ids to export separated by ',' empty for all documents in collection",true));
 			Parametros=ListaCampos;
 			return ListaCampos;
 		}
