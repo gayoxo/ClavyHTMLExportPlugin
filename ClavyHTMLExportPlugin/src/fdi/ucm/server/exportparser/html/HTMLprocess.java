@@ -536,7 +536,7 @@ public class HTMLprocess {
 			CompleteGrammar completeGrammar) {
 		ArrayList<CompleteDocuments> Salida=new ArrayList<CompleteDocuments>();
 		for (CompleteDocuments iterable_element : Salvar.getEstructuras()) {
-			if (ListaDeDocumentos.isEmpty()||(ListaDeDocumentos.contains(iterable_element.getClavilenoid())&&iterable_element.getDocument().getClavilenoid().equals(completeGrammar.getClavilenoid())))
+			if (ListaDeDocumentos.isEmpty()||(ListaDeDocumentos.contains(iterable_element.getClavilenoid())&&StaticFunctionsHTML.isInGrammar(iterable_element,completeGrammar)))
 				Salida.add(iterable_element);
 		}
 		return Salida;

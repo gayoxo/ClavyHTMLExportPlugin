@@ -137,13 +137,13 @@ public class HTMLprocessOdA extends HTMLprocess {
 			CompleteGrammar completeGrammar) {
 		ArrayList<CompleteDocuments> Salida1=new ArrayList<CompleteDocuments>();
 		for (CompleteDocuments iterable_element : Salvar.getEstructuras()) {
-			if (inListNormal(iterable_element)&&iterable_element.getDocument().getClavilenoid().equals(completeGrammar.getClavilenoid()))
+			if (inListNormal(iterable_element)&&StaticFuctionsHTMLOdA.isInGrammar(iterable_element,completeGrammar))
 				Salida1.add(iterable_element);
 		}
 		
 		ArrayList<CompleteDocuments> Salida=new ArrayList<CompleteDocuments>();
 		for (CompleteDocuments completeDocuments : Salida1) {
-			if (StaticFuctionsHTMLOdA.getPublic(completeDocuments)||Administrador||inList(completeDocuments))
+			if (StaticFuctionsHTMLOdA.getPublic(completeDocuments,completeGrammar)||Administrador||inList(completeDocuments))
 				Salida.add(completeDocuments);
 		}
 		
@@ -631,7 +631,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 					
 					boolean isAfile=false;
 					
-					if (StaticFuctionsHTMLOdA.isAVirtualObject(Linked) )
+					if (StaticFuctionsHTMLOdA.isAVirtualObject(Linked,Salvar.getMetamodelGrammar()) )
 						{
 							for (CompleteElement elemetpos : Linked.getDescription()) {
 								if (elemetpos instanceof CompleteTextElement&&elemetpos.getHastype() instanceof CompleteTextElementType&&StaticFuctionsHTMLOdA.isIDOV((CompleteTextElementType)elemetpos.getHastype()))
@@ -639,7 +639,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 							}
 						IconPath=StaticFunctionsHTML.calculaIconoString(Linked.getIcon());
 						}
-					else if (StaticFuctionsHTMLOdA.isAFile(Linked) )
+					else if (StaticFuctionsHTMLOdA.isAFile(Linked,Salvar.getMetamodelGrammar()) )
 					{
 						for (CompleteElement Elem : Linked.getDescription()) {
 							if (Elem instanceof CompleteResourceElement&&Elem.getHastype() instanceof CompleteResourceElementType&&StaticFuctionsHTMLOdA.isFileFisico(Elem.getHastype()))
@@ -659,7 +659,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 						isAfile=true;
 						
 					}
-					else if (StaticFuctionsHTMLOdA.isAURL(Linked) )
+					else if (StaticFuctionsHTMLOdA.isAURL(Linked,Salvar.getMetamodelGrammar()) )
 					{
 						for (CompleteElement Elem : Linked.getDescription()) {
 							if (Elem instanceof CompleteResourceElement&&Elem.getHastype() instanceof CompleteResourceElementType&&StaticFuctionsHTMLOdA.isURI(Elem.getHastype()))
