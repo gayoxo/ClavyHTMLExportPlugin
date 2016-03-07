@@ -51,16 +51,29 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 public class HTMLprocess {
 
 	protected static final String EXPORTTEXT = "Export HTML RESULT";
-	protected ArrayList<Long> ListaDeDocumentos;
+	protected ArrayList<List<Long>> ListaDeDocumentosT;
 	protected CompleteCollection Salvar;
 	protected String SOURCE_FOLDER;
 	protected StringBuffer CodigoHTML;
 	protected CompleteLogAndUpdates CL;
 	private static final Pattern regexAmbito = Pattern.compile("^(ht|f)tp(s)*://(.)*$");
 	protected HashMap<String,CompleteStructure> NameCSS;
+	protected static final String CLAVY="OdAClavy";
 
 	public HTMLprocess(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL) {
-		ListaDeDocumentos=listaDeDocumentos;
+		ListaDeDocumentosT=new ArrayList<List<Long>>();
+		if (listaDeDocumentos.size()<500)
+			ListaDeDocumentosT.add(listaDeDocumentos);
+		else
+			{
+			for (int i = 0; i < listaDeDocumentos.size(); i=i+500) {
+				int fin=i+500;
+				if (fin>listaDeDocumentos.size())
+					fin=listaDeDocumentos.size();
+				ListaDeDocumentosT.add(listaDeDocumentos.subList(i, fin));
+					
+				}
+			}
 		Salvar=salvar;
 		SOURCE_FOLDER=sOURCE_FOLDER;
 		CL=cL;
@@ -69,40 +82,48 @@ public class HTMLprocess {
 	}
 
 	public void preocess() {
-		CodigoHTML=new StringBuffer();
-		CodigoHTML.append("<html>");
-		CodigoHTML.append("<head>");  
-		CodigoHTML.append("<title>"+EXPORTTEXT+"</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"); 
-		CodigoHTML.append("<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"style.css\">");
-		CodigoHTML.append("<meta name=\"description\" content=\"Informe generado por el sistema OdAClavy\">");
-		Calendar C=new GregorianCalendar();
-		DateFormat df = new SimpleDateFormat ("yyyy-MM-dd");
-		String ValueHoy = df.format(C.getTime());	
-		CodigoHTML.append("<meta name=\"fecha\" content=\""+ValueHoy+"\">");
-		CodigoHTML.append("<meta name=\"author\" content=\"Grupo de investigación ILSA-UCM\">");
-//		CodigoHTML.append("<style>");
-//		CodigoHTML.append("li.doc {color: blue;}");	
-//		CodigoHTML.append("</style>");
-		CodigoHTML.append("</head>");  
-		CodigoHTML.append("<body>");
-		CodigoHTML.append("<ul class\"_List LBody\">");
 		
-		
-		ArrayList<CompleteGrammar> GramaticasAProcesar=ProcesaGramaticas(Salvar.getMetamodelGrammar());
-		for (CompleteGrammar completeGrammar : GramaticasAProcesar) {
-			ArrayList<CompleteDocuments> Lista=calculadocumentos(completeGrammar);
-			if (!Lista.isEmpty())
-				{
-				Lista=ordenaLista(Lista);
-				proceraDocumentos(Lista,completeGrammar);
-				}
+		int total=0;
+
+		for (List<Long> ListaDeDocumentos : ListaDeDocumentosT) {
+			CodigoHTML=new StringBuffer();
+			CodigoHTML.append("<html>");
+			CodigoHTML.append("<head>");  
+			CodigoHTML.append("<title>"+EXPORTTEXT+"</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"); 
+			CodigoHTML.append("<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"style.css\">");
+			CodigoHTML.append("<meta name=\"description\" content=\"Informe generado por el sistema "+CLAVY+"\">");
+			Calendar C=new GregorianCalendar();
+			DateFormat df = new SimpleDateFormat ("yyyy-MM-dd");
+			String ValueHoy = df.format(C.getTime());	
+			CodigoHTML.append("<meta name=\"fecha\" content=\""+ValueHoy+"\">");
+			CodigoHTML.append("<meta name=\"author\" content=\"Grupo de investigación ILSA-UCM\">");
+//			CodigoHTML.append("<style>");
+//			CodigoHTML.append("li.doc {color: blue;}");	
+//			CodigoHTML.append("</style>");
+			CodigoHTML.append("</head>");  
+			CodigoHTML.append("<body>");
+			CodigoHTML.append("<ul class\"_List LBody\">");
+			
+			
+			ArrayList<CompleteGrammar> GramaticasAProcesar=ProcesaGramaticas(Salvar.getMetamodelGrammar());
+			for (CompleteGrammar completeGrammar : GramaticasAProcesar) {
+				ArrayList<CompleteDocuments> Lista=calculadocumentos(completeGrammar,ListaDeDocumentos);
+				if (!Lista.isEmpty())
+					{
+					Lista=ordenaLista(Lista);
+					proceraDocumentos(Lista,completeGrammar);
+					}
+			}
+			
+			CodigoHTML.append("</ul>");
+			CodigoHTML.append("</body>");
+			CodigoHTML.append("</html>");
+			
+			creaLaWeb((ListaDeDocumentosT.size()==1),total,total+500);
+			total=total+500;
 		}
 		
-		CodigoHTML.append("</ul>");
-		CodigoHTML.append("</body>");
-		CodigoHTML.append("</html>");
 		
-		creaLaWeb();
 		creaLACSS();
 		
 		
@@ -159,13 +180,19 @@ public class HTMLprocess {
 		
 	}
 
-	private void creaLaWeb() {
+	private void creaLaWeb(boolean unico, int inicio, int fin) {
 //		 FileWriter filewriter = null;
 //		 PrintWriter printw = null;
 		    
+		String Name;
+		if (unico)
+			Name="index";
+		else
+			Name=inicio+"_"+fin;
+		
 		try {
 			
-			File fileDir = new File(SOURCE_FOLDER+"\\index.html");
+			File fileDir = new File(SOURCE_FOLDER+"\\"+Name+".html");
 			 
 			Writer out = new BufferedWriter(new OutputStreamWriter(
 				new FileOutputStream(fileDir), "UTF8"));
@@ -533,7 +560,7 @@ public class HTMLprocess {
 	}
 
 	protected ArrayList<CompleteDocuments> calculadocumentos(
-			CompleteGrammar completeGrammar) {
+			CompleteGrammar completeGrammar,List<Long> ListaDeDocumentos) {
 		ArrayList<CompleteDocuments> Salida=new ArrayList<CompleteDocuments>();
 		for (CompleteDocuments iterable_element : Salvar.getEstructuras()) {
 			if (ListaDeDocumentos.isEmpty()||(ListaDeDocumentos.contains(iterable_element.getClavilenoid())&&StaticFunctionsHTML.isInGrammar(iterable_element,completeGrammar)))

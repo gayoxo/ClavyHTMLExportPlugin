@@ -134,10 +134,10 @@ public class HTMLprocessOdA extends HTMLprocess {
 	
 	@Override
 	protected ArrayList<CompleteDocuments> calculadocumentos(
-			CompleteGrammar completeGrammar) {
+			CompleteGrammar completeGrammar,List<Long> ListaDeDocumentos) {
 		ArrayList<CompleteDocuments> Salida1=new ArrayList<CompleteDocuments>();
 		for (CompleteDocuments iterable_element : Salvar.getEstructuras()) {
-			if (inListNormal(iterable_element)&&StaticFuctionsHTMLOdA.isInGrammar(iterable_element,completeGrammar))
+			if (inListNormal(iterable_element,ListaDeDocumentos)&&StaticFuctionsHTMLOdA.isInGrammar(iterable_element,completeGrammar))
 				Salida1.add(iterable_element);
 		}
 		
@@ -151,7 +151,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 		return Salida;
 	}
 	
-	private boolean inListNormal(CompleteDocuments completeDocuments) {
+	private boolean inListNormal(CompleteDocuments completeDocuments,List<Long> ListaDeDocumentos) {
 		String IDOV=completeDocuments.getClavilenoid()+"";
 		for (CompleteElement elemetpos : completeDocuments.getDescription()) {
 			if (elemetpos instanceof CompleteTextElement&&elemetpos.getHastype() instanceof CompleteTextElementType&&StaticFuctionsHTMLOdA.isIDOV((CompleteTextElementType)elemetpos.getHastype()))
