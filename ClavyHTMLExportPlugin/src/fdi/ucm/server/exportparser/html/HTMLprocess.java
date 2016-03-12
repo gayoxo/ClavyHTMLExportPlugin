@@ -62,6 +62,15 @@ public class HTMLprocess {
 
 	public HTMLprocess(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL) {
 		ListaDeDocumentosT=new ArrayList<List<Long>>();
+		
+		if (listaDeDocumentos.isEmpty())
+			{
+			for (CompleteDocuments Docu : salvar.getEstructuras()) {
+				listaDeDocumentos.add(Docu.getClavilenoid());
+			}
+			}
+		
+		
 		if (listaDeDocumentos.size()<500)
 			ListaDeDocumentosT.add(listaDeDocumentos);
 		else
@@ -74,6 +83,8 @@ public class HTMLprocess {
 					
 				}
 			}
+		
+		
 		Salvar=salvar;
 		SOURCE_FOLDER=sOURCE_FOLDER;
 		CL=cL;
