@@ -50,6 +50,7 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
  */
 public class HTMLprocess {
 
+	private static final int _1000 = 1000;
 	protected static final String EXPORTTEXT = "Export HTML RESULT";
 	protected ArrayList<List<Long>> ListaDeDocumentosT;
 	protected CompleteCollection Salvar;
@@ -71,12 +72,12 @@ public class HTMLprocess {
 			}
 		
 		
-		if (listaDeDocumentos.size()<500)
+		if (listaDeDocumentos.size()<_1000)
 			ListaDeDocumentosT.add(listaDeDocumentos);
 		else
 			{
-			for (int i = 0; i < listaDeDocumentos.size(); i=i+500) {
-				int fin=i+500;
+			for (int i = 0; i < listaDeDocumentos.size(); i=i+_1000) {
+				int fin=i+_1000;
 				if (fin>listaDeDocumentos.size())
 					fin=listaDeDocumentos.size();
 				ListaDeDocumentosT.add(listaDeDocumentos.subList(i, fin));
