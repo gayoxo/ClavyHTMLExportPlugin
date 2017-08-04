@@ -450,9 +450,10 @@ public class HTMLprocess {
 									NameS+"</a></li>");				
 
 					}
-				else
+				else 
 				{
-					StringSalida.append("<li> <span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span></li>");
+					if (completeST.isSelectable())
+						StringSalida.append("<li> <span class=\"_Value "+tipo+"\">"+((CompleteElementType)completeST).getName()+"</span></li>");
 
 				}
 //				else 
@@ -476,7 +477,7 @@ public class HTMLprocess {
 			
 			if (!HijosSalida.isEmpty()&&Vacio)
 			{
-			StringSalida.append("<li> <span class=\"_Value "+tipo+"\">"+((CompleteElementType)completeST).getName()+"</span> </li>");
+			StringSalida.append("<li> <span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> </li>");
 			
 			}
 		
