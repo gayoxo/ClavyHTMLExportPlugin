@@ -450,8 +450,13 @@ public class HTMLprocess {
 									NameS+"</a></li>");				
 
 					}
-				else 
-					Vacio=true;
+				else
+				{
+					StringSalida.append("<li> <span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span></li>");
+
+				}
+//				else 
+//					Vacio=true;
 				
 				}
 			else
