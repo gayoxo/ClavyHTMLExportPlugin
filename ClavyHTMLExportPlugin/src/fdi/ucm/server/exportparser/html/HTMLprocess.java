@@ -476,7 +476,7 @@ public class HTMLprocess {
 			
 			if (!HijosSalida.isEmpty()&&Vacio)
 			{
-			StringSalida.append("<li> <span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+":</span> </li>");
+			StringSalida.append("<li> <span class=\"_Value "+tipo+"\">"+((CompleteElementType)completeST).getName()+"</span> </li>");
 			
 			}
 		
