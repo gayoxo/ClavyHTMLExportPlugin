@@ -15,7 +15,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -726,8 +725,8 @@ public class StaticFuctionsHTMLOdA {
 
 
 	private static boolean isInGrammar(HashSet<Long> elemT,
-			List<CompleteStructure> sons) {
-		for (CompleteStructure CSlong1 : sons) {
+			List<CompleteElementType> sons) {
+		for (CompleteElementType CSlong1 : sons) {
 			if (elemT.contains(CSlong1.getClavilenoid())||isInGrammar(elemT, CSlong1.getSons()))
 				return true;
 			

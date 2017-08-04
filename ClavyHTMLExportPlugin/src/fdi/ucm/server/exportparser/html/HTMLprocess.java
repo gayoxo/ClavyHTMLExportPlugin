@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,8 +40,7 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementU
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
+
 
 /**
  * @author Joaquin Gayoso-Cabada
@@ -58,7 +56,7 @@ public class HTMLprocess {
 	protected StringBuffer CodigoHTML;
 	protected CompleteLogAndUpdates CL;
 	private static final Pattern regexAmbito = Pattern.compile("^(ht|f)tp(s)*://(.)*$");
-	protected HashMap<String,CompleteStructure> NameCSS;
+	protected HashMap<String,CompleteElementType> NameCSS;
 	protected static final String CLAVY="OdAClavy";
 
 	public HTMLprocess(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL) {
@@ -90,7 +88,7 @@ public class HTMLprocess {
 		SOURCE_FOLDER=sOURCE_FOLDER;
 		CL=cL;
 		
-		NameCSS=new HashMap<String,CompleteStructure>();
+		NameCSS=new HashMap<String,CompleteElementType>();
 	}
 
 	public void preocess() {
@@ -277,8 +275,8 @@ public class HTMLprocess {
 			
 			CodigoHTML.append("<li> <span class=\"_Type Icon N_1\">Icon:</span> <img class=\"Icon _Value N_1V\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
 			CodigoHTML.append("<li> <span class=\"_Type Description N_2\">Description:</span> <span class=\"Description _Value N_0V\">"+completeDocuments.getDescriptionText()+"</span></li>");
-			for (CompleteStructure completeST : completeGrammar.getSons()) {
-				String Salida = processST(completeST,completeDocuments,new ArrayList<Integer>());
+			for (CompleteElementType completeST : completeGrammar.getSons()) {
+				String Salida = processST(completeST,completeDocuments);
 				if (!Salida.isEmpty())
 					CodigoHTML.append(Salida);
 			}
@@ -313,13 +311,11 @@ public class HTMLprocess {
 		os.close();
 	}
 
-	private String processST(CompleteStructure completeST,
-			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
+	private String processST(CompleteElementType completeST,
+			CompleteDocuments completeDocuments) {
 		StringBuffer StringSalida=new StringBuffer();
 		boolean Vacio=true;
-		if (completeST instanceof CompleteElementType)
-			{
-			CompleteElement E=findElem(completeST,completeDocuments.getDescription(),ambitos);
+			CompleteElement E=findElem(completeST,completeDocuments.getDescription());
 			
 			
 			String tipo = ReduceString(((CompleteElementType)completeST).getName());
@@ -462,9 +458,9 @@ public class HTMLprocess {
 				Vacio=true;
 			
 			StringBuffer Hijos=new StringBuffer();
-			for (CompleteStructure hijo : completeST.getSons()) {
+			for (CompleteElementType hijo : completeST.getSons()) {
 				
-				String result2 = processST(hijo, completeDocuments, ambitos);
+				String result2 = processST(hijo, completeDocuments);
 				
 				if (!result2.isEmpty())
 					Hijos.append(result2.toString());	
@@ -486,37 +482,8 @@ public class HTMLprocess {
 			StringSalida.append("</ul>");
 			}
 			
-			}
-		else
-			if (completeST instanceof CompleteIterator)
-			{
-				HashSet<Integer> AmbitosViables=calculaAmbitos(ambitos,completeST,completeDocuments);
-			for (Integer integer : AmbitosViables) {
-				ArrayList<Integer> ambitosNuevos=new ArrayList<Integer>();
-				for (Integer integer2 : ambitos) 
-					ambitosNuevos.add(integer2.intValue());
-				ambitosNuevos.add(integer);
-				
-				StringBuffer Hijos=new StringBuffer();
-				for (CompleteStructure hijo : completeST.getSons()) {
-					
-					String result2 = processST(hijo, completeDocuments, ambitosNuevos);
-					
-					if (!result2.isEmpty())
-						Hijos.append(result2.toString());	
-				}
-				
-				String HijosSalida = Hijos.toString();
-				
-				if (!HijosSalida.isEmpty())
-				{
 
-				StringSalida.append(HijosSalida);
-
-				}
-			}	
-			}
-		
+	
 		
 		
 		return StringSalida.toString();
@@ -525,52 +492,61 @@ public class HTMLprocess {
 
 
 
-	protected HashSet<Integer> calculaAmbitos(ArrayList<Integer> ambitos,
-			CompleteStructure completeST, CompleteDocuments completeDocuments) {
-		HashSet<Long> hijos=new HashSet<Long>();
-		calculaHijos(completeST,hijos);
-		HashSet<Integer> Salida=new HashSet<Integer>();
-		int ultimo=ambitos.size();
-		for (CompleteElement element : completeDocuments.getDescription()) {
-			if (hijos.contains(element.getHastype().getClavilenoid())&&element.getAmbitos().size()>ultimo)
-				if (!Salida.contains(element.getAmbitos().get(ultimo)))
-					Salida.add(element.getAmbitos().get(ultimo));
-				
-				
-		}
-		return Salida;
-	}
+//	protected HashSet<Integer> calculaAmbitos(ArrayList<Integer> ambitos,
+//			CompleteElementType completeST, CompleteDocuments completeDocuments) {
+//		HashSet<Long> hijos=new HashSet<Long>();
+//		calculaHijos(completeST,hijos);
+//		HashSet<Integer> Salida=new HashSet<Integer>();
+//		int ultimo=ambitos.size();
+//		for (CompleteElement element : completeDocuments.getDescription()) {
+//			if (hijos.contains(element.getHastype().getClavilenoid())&&element.getAmbitos().size()>ultimo)
+//				if (!Salida.contains(element.getAmbitos().get(ultimo)))
+//					Salida.add(element.getAmbitos().get(ultimo));
+//				
+//				
+//		}
+//		return Salida;
+//	}
+//
+//	private void calculaHijos(CompleteElementType completeST, HashSet<Long> hijos) {
+//		if (!hijos.contains(completeST.getClavilenoid()))
+//			hijos.add(completeST.getClavilenoid());
+//		for (CompleteElementType hijo : completeST.getSons()) {
+//			calculaHijos(hijo,hijos);
+//		}
+//	}
+//
+//	protected CompleteElement findElem(CompleteElementType completeST, List<CompleteElement> description,
+//			ArrayList<Integer> ambitos) {
+//		for (CompleteElement elementos : description) {
+//			if (elementos.getHastype().getClavilenoid().equals(completeST.getClavilenoid())&&validos(elementos.getAmbitos(),ambitos))
+//				return elementos;
+//		}
+//		return null;
+//	}
+//
+//	private boolean validos(ArrayList<Integer> documento,
+//			ArrayList<Integer> actual) {
+//		if (actual.size()>documento.size())
+//			return false;
+//		
+//		for (int i = 0; i < actual.size(); i++) {
+//			if (!actual.get(i).equals(documento.get(i)))
+//				return false;
+//		}
+//		
+//		return true;
+//	}
 
-	private void calculaHijos(CompleteStructure completeST, HashSet<Long> hijos) {
-		if (!hijos.contains(completeST.getClavilenoid()))
-			hijos.add(completeST.getClavilenoid());
-		for (CompleteStructure hijo : completeST.getSons()) {
-			calculaHijos(hijo,hijos);
-		}
-	}
-
-	protected CompleteElement findElem(CompleteStructure completeST, List<CompleteElement> description,
-			ArrayList<Integer> ambitos) {
-		for (CompleteElement elementos : description) {
-			if (elementos.getHastype().getClavilenoid().equals(completeST.getClavilenoid())&&validos(elementos.getAmbitos(),ambitos))
-				return elementos;
-		}
-		return null;
-	}
-
-	private boolean validos(ArrayList<Integer> documento,
-			ArrayList<Integer> actual) {
-		if (actual.size()>documento.size())
-			return false;
-		
-		for (int i = 0; i < actual.size(); i++) {
-			if (!actual.get(i).equals(documento.get(i)))
-				return false;
-		}
-		
-		return true;
-	}
-
+	
+	protected CompleteElement findElem(CompleteElementType completeST, List<CompleteElement> description) {
+for (CompleteElement elementos : description) {
+	if (elementos.getHastype().getClavilenoid().equals(completeST.getClavilenoid()))
+		return elementos;
+}
+return null;
+}
+	
 	protected ArrayList<CompleteDocuments> calculadocumentos(
 			CompleteGrammar completeGrammar,List<Long> ListaDeDocumentos) {
 		ArrayList<CompleteDocuments> Salida=new ArrayList<CompleteDocuments>();
@@ -608,7 +584,7 @@ public class HTMLprocess {
 	}
 	
 	
-	protected String CreateNameCSS(String tipo, CompleteStructure completeST) {
+	protected String CreateNameCSS(String tipo, CompleteElementType completeST) {
 		int i=0;
 		String Base=tipo;
 		while (NameCSS.get(Base+i)!=null&&NameCSS.get(Base+i)!=completeST)

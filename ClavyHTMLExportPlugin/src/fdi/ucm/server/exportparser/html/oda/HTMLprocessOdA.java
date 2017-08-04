@@ -29,9 +29,7 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementU
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -264,26 +262,22 @@ public class HTMLprocessOdA extends HTMLprocess {
 			CodigoHTML.append("<li> <span class=\"_Type "+DescriptionR+"\">"+Description+":</span> <span class=\""+DescriptionR+"V \">"+completeDocuments.getDescriptionText()+"</span></li>");
 			
 			
-			ArrayList<CompleteStructure> OdAElements=findOdAElements(completeGrammar.getSons());
+			ArrayList<CompleteElementType> OdAElements=findOdAElements(completeGrammar.getSons());
 			
 			
-			for (CompleteStructure completeST : OdAElements) {
+			for (CompleteElementType completeST : OdAElements) {
 				String Salida="";
 				if (completeST instanceof CompleteElementType&&(StaticFuctionsHTMLOdA.isDatos((CompleteElementType)completeST)||StaticFuctionsHTMLOdA.isMetaDatos((CompleteElementType)completeST)))
-						Salida = processSTDatosYMeta(completeST,completeDocuments,new ArrayList<Integer>());
+						Salida = processSTDatosYMeta(completeST,completeDocuments);
 				else if (completeST instanceof CompleteElementType&&StaticFuctionsHTMLOdA.isResources((CompleteElementType)completeST))
 						{
-						HashSet<Integer> AmbitosViables=calculaAmbitos(new ArrayList<Integer>(),completeST,completeDocuments);
 						StringBuffer StringSalida=new StringBuffer();
-						for (Integer integer : AmbitosViables) {
-							ArrayList<Integer> ambitosNuevos=new ArrayList<Integer>();
-							ambitosNuevos.add(integer);
-							
+			
 							StringBuffer Hijos=new StringBuffer();
 							
 							String result2="";
 
-									result2 = processSTRecursos(completeST, completeDocuments, ambitosNuevos);
+									result2 = processSTRecursos(completeST, completeDocuments);
 								
 								if (!result2.isEmpty())
 									Hijos.append(result2.toString());	
@@ -296,7 +290,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 							StringSalida.append(HijosSalida);
 
 							}
-						}
+
 						String ST = StringSalida.toString();
 						StringBuffer StringSalidaFinal = new StringBuffer();
 						if (!ST.isEmpty())
@@ -340,16 +334,15 @@ public class HTMLprocessOdA extends HTMLprocess {
 
 	
 
-	private String processSTDatosYMeta(CompleteStructure completeST,
-			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
+	private String processSTDatosYMeta(CompleteElementType completeST,
+			CompleteDocuments completeDocuments) {
 		StringBuffer StringSalida=new StringBuffer();
-		if (completeST instanceof CompleteElementType)
-			{
+
 			
 			StringBuffer Hijos=new StringBuffer();
-			for (CompleteStructure hijo : completeST.getSons()) {
+			for (CompleteElementType hijo : completeST.getSons()) {
 				
-				String result2 = processSTResto(hijo, completeDocuments, ambitos);
+				String result2 = processSTResto(hijo, completeDocuments);
 				
 				if (!result2.isEmpty())
 					Hijos.append(result2.toString());	
@@ -384,7 +377,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 			StringSalida.append("</ul>");
 			}
 		
-			}
+
 
 		return StringSalida.toString();
 		
@@ -392,14 +385,14 @@ public class HTMLprocessOdA extends HTMLprocess {
 	
 	
 
-	private String processSTResto(CompleteStructure completeST,
-			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
+	private String processSTResto(CompleteElementType completeST,
+			CompleteDocuments completeDocuments) {
 		StringBuffer StringSalida=new StringBuffer();
 		boolean Vacio=true;
 		boolean Visible=false;
 		if (completeST instanceof CompleteElementType&&inList((CompleteElementType)completeST))
 			{
-			CompleteElement E=findElem(completeST,completeDocuments.getDescription(),ambitos);
+			CompleteElement E=findElem(completeST,completeDocuments.getDescription());
 			if (E!=null)
 				{
 				Vacio=false;
@@ -530,9 +523,9 @@ public class HTMLprocessOdA extends HTMLprocess {
 				Vacio=true;
 			
 			StringBuffer Hijos=new StringBuffer();
-			for (CompleteStructure hijo : completeST.getSons()) {
+			for (CompleteElementType hijo : completeST.getSons()) {
 				
-				String result2 = processSTResto(hijo, completeDocuments, ambitos);
+				String result2 = processSTResto(hijo, completeDocuments);
 				
 				if (!result2.isEmpty())
 					Hijos.append(result2.toString());	
@@ -593,11 +586,10 @@ public class HTMLprocessOdA extends HTMLprocess {
 			}
 	}
 
-	private String processSTRecursos(CompleteStructure completeST,
-			CompleteDocuments completeDocuments, ArrayList<Integer> ambitos) {
+	private String processSTRecursos(CompleteElementType completeST,
+			CompleteDocuments completeDocuments) {
 		StringBuffer StringSalida=new StringBuffer();
-		if (completeST instanceof CompleteElementType)
-			{
+
 			
 			String tipo = ReduceString(((CompleteElementType)completeST).getName());
 			
@@ -615,7 +607,7 @@ public class HTMLprocessOdA extends HTMLprocess {
 			tipo=tipo+" N"+IDT;
 			
 			
-			CompleteElement E=findElem(completeST,completeDocuments.getDescription(),ambitos);
+			CompleteElement E=findElem(completeST,completeDocuments.getDescription());
 			if (E!=null)
 				{
 				if (E instanceof CompleteLinkElement&&(StaticFuctionsHTMLOdA.getVisible(E)||Administrador||inList(completeDocuments)))
@@ -761,9 +753,9 @@ public class HTMLprocessOdA extends HTMLprocess {
 							}
 					
 					StringBuffer Hijos=new StringBuffer();
-					for (CompleteStructure hijo : completeST.getSons()) {
+					for (CompleteElementType hijo : completeST.getSons()) {
 						
-						String result2 = processSTResto(hijo, completeDocuments, ambitos);
+						String result2 = processSTResto(hijo, completeDocuments);
 						
 						if (!result2.isEmpty())
 							Hijos.append(result2.toString());	
@@ -788,19 +780,16 @@ public class HTMLprocessOdA extends HTMLprocess {
 				
 				}
 
-			
-			
-			
-			}
+	
 
 		return StringSalida.toString();
 		
 	}
 	
-	private ArrayList<CompleteStructure> findOdAElements(
-			ArrayList<CompleteStructure> sons) {
-		ArrayList<CompleteStructure> Salida=new ArrayList<CompleteStructure>();
-		for (CompleteStructure hastype : sons) {
+	private ArrayList<CompleteElementType> findOdAElements(
+			ArrayList<CompleteElementType> sons) {
+		ArrayList<CompleteElementType> Salida=new ArrayList<CompleteElementType>();
+		for (CompleteElementType hastype : sons) {
 			if (hastype instanceof CompleteElementType&&StaticFuctionsHTMLOdA.isDatos((CompleteElementType)hastype))
 				{
 				Salida.add(hastype);
@@ -808,22 +797,12 @@ public class HTMLprocessOdA extends HTMLprocess {
 				}
 				
 		}
-		for (CompleteStructure hastype : sons) {
+		for (CompleteElementType hastype : sons) {
 			if (hastype instanceof CompleteElementType&&StaticFuctionsHTMLOdA.isMetaDatos((CompleteElementType)hastype))
 				{
 				Salida.add(hastype);
 				break;
 				}
-				
-		}
-		for (CompleteStructure hastype : sons) {
-			if (hastype instanceof CompleteIterator)
-				for (CompleteStructure hastype2 : hastype.getSons()) {
-					if (hastype2 instanceof CompleteElementType&&StaticFuctionsHTMLOdA.isResources((CompleteElementType)hastype2))
-							Salida.add(hastype2);
-					break;
-				}
-
 				
 		}
 		return Salida;
