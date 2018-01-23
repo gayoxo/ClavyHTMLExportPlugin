@@ -389,14 +389,13 @@ CodigoHTML.append("<body>");
 					 heightmini= (50*height)/width;
 					
 					
-					StringSalida.append("<li> <<span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+
+					StringSalida.append("<li> <span class=\"_Type "+tipo+"\">"+((CompleteElementType)completeST).getName()+
 							": </span> "+
-//							"Document Linked ->"+
 							" <img class=\"_ImagenOV "+tipo+"V \" src=\""+
 							completeDocuments.getClavilenoid()+File.separator+NameS+
 							"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+
 							";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /> "+
-							"<span class=\""+tipo+"V _ClavyID _Value\">" +Linked.getClavilenoid()+"</span>"+
+							"<span class=\""+tipo+"V _ClavyID _Value\"></span>"+
 							"<span class=\""+tipo+"V _DescriptionRel _Value\">" +Linked.getDescriptionText()+"</span></li>");
 					}
 					}
