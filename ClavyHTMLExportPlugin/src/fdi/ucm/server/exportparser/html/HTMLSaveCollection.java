@@ -15,6 +15,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 
+
 import fdi.ucm.server.modelComplete.ImportExportDataEnum;
 import fdi.ucm.server.modelComplete.ImportExportPair;
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
@@ -38,6 +39,7 @@ public class HTMLSaveCollection extends SaveCollection {
 	private List<String> fileList; 
 	private String OUTPUT_ZIP_FILE = "";
 	private String SOURCE_FOLDER = ""; // SourceFolder path
+	private String TextoIn;
 	private static final Pattern regexAmbito = Pattern.compile("^[0-9]+(,[0-9]+)*$");
 
 	
@@ -66,7 +68,7 @@ public class HTMLSaveCollection extends SaveCollection {
 			Dir.mkdirs();
 			
 			
-			HTMLprocess oda= new HTMLprocess(ListaDeDocumentos,Salvar,SOURCE_FOLDER,CL);
+			HTMLprocess oda= new HTMLprocess(ListaDeDocumentos,Salvar,SOURCE_FOLDER,CL,TextoIn);
 			
 			
 			oda.preocess();
@@ -124,7 +126,8 @@ public class HTMLSaveCollection extends SaveCollection {
 		if (Parametros==null)
 		{
 			ArrayList<ImportExportPair> ListaCampos=new ArrayList<ImportExportPair>();
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Documents ids to export separated by ',' empty for all documents in collection",true));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Name of the export",true));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Documents, "Documents selection ( Keep Ctrl )",true));
 			Parametros=ListaCampos;
 			return ListaCampos;
 		}
@@ -136,7 +139,11 @@ public class HTMLSaveCollection extends SaveCollection {
 		if (DateEntrada!=null)
 		{
 			
-			String Entrada=DateEntrada.get(0).trim();
+
+			TextoIn=DateEntrada.get(0).trim();
+			
+			
+			String Entrada=DateEntrada.get(1).trim();
 			if (Entrada.endsWith(","))
 				Entrada=Entrada.substring(0, Entrada.length()-1);
 			

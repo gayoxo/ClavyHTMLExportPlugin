@@ -15,6 +15,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 
+
+
 import fdi.ucm.server.modelComplete.ImportExportDataEnum;
 import fdi.ucm.server.modelComplete.ImportExportPair;
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
@@ -41,6 +43,7 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 	private ArrayList<Long> DocumentsList;
 	private ArrayList<Long> StructureList;
 	private boolean Admin;
+	private String TextoIn;
 	private static final Pattern regexAmbito = Pattern.compile("^[0-9]+(,[0-9]+)*$");
 
 	
@@ -73,7 +76,7 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 			
 			
 			
-			HTMLprocessOdA oda= new HTMLprocessOdA(ListaDeDocumentos,Salvar,SOURCE_FOLDER,CL,DocumentsList,Admin,StructureList);
+			HTMLprocessOdA oda= new HTMLprocessOdA(ListaDeDocumentos,Salvar,SOURCE_FOLDER,CL,DocumentsList,Admin,StructureList,TextoIn);
 			
 			
 			oda.preocess();
@@ -131,7 +134,8 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 		if (Parametros==null)
 		{
 			ArrayList<ImportExportPair> ListaCampos=new ArrayList<ImportExportPair>();
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Number de los IDOV en OdA para exportar separados por ','"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Name of the export",true));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Documents, "Documents selection ( Keep Ctrl )",true));
 			Parametros=ListaCampos;
 			return ListaCampos;
 		}
@@ -142,7 +146,10 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 	public void setConfiguracion(ArrayList<String> DateEntrada) {
 		if (DateEntrada!=null)
 		{
-			String Entrada=DateEntrada.get(0).trim();
+			TextoIn=DateEntrada.get(0).trim();
+			
+			
+			String Entrada=DateEntrada.get(1).trim();
 			if (Entrada.endsWith(","))
 				Entrada=Entrada.substring(0, Entrada.length()-1);
 			

@@ -54,8 +54,8 @@ public class HTMLprocessOdA extends HTMLprocess {
 	 * @param b 
 	 * @param arrayList 
 	 */
-	public HTMLprocessOdA(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL, ArrayList<Long> administradorList, boolean administrador, ArrayList<Long> listaStructura) {
-		super(listaDeDocumentos,salvar,sOURCE_FOLDER,cL);
+	public HTMLprocessOdA(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL, ArrayList<Long> administradorList, boolean administrador, ArrayList<Long> listaStructura, String Textot) {
+		super(listaDeDocumentos,salvar,sOURCE_FOLDER,cL,Textot);
 		
 		AdministradorListaDocumentos=new HashSet<Long>();
 		for (Long long1 : administradorList) {
