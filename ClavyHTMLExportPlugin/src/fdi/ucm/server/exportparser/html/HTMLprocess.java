@@ -111,7 +111,29 @@ public class HTMLprocess {
 //			CodigoHTML.append("li.doc {color: blue;}");	
 //			CodigoHTML.append("</style>");
 			CodigoHTML.append("</head>");  
-			CodigoHTML.append("<body>");
+CodigoHTML.append("<body onload=\"primeraTab()\">");
+			
+			CodigoHTML.append("<script> \n");
+			CodigoHTML.append("function openCity(evt, cityName) {"+
+"    var i, tabcontent, tablinks; " +
+"    tabcontent = document.getElementsByClassName(\"tabcontent\");"+
+"    for (i = 0; i < tabcontent.length; i++) {"+
+"        tabcontent[i].style.display = \"none\";"+
+"    }"+
+"    tablinks = document.getElementsByClassName(\"tablinks\");"+
+"    for (i = 0; i < tablinks.length; i++) {"+
+"        tablinks[i].className = tablinks[i].className.replace(\" active\", \"\");"+
+"    }"+
+"    document.getElementById(cityName).style.display = \"block\";"+
+"    evt.currentTarget.className += \" active\";"+
+"} \n");
+			
+			CodigoHTML.append("function primeraTab() {");
+					CodigoHTML.append(" openCity(event, 'Document');");
+							CodigoHTML.append("}");
+							
+		CodigoHTML.append("</script>");
+		
 			CodigoHTML.append("<ul class\"_List LBody\">");
 			
 			
@@ -181,6 +203,11 @@ public class HTMLprocess {
 		     printw.println("span._Type {font-weight: bold;}");
 		     printw.println("ul._List {}");
 		     printw.println("span._Value {}");
+		     printw.println(".tab {overflow: hidden; border: 1px solid #ccc; background-color: #f1f1f1;}");
+		     printw.println(".tab button { background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 14px 16px; transition: 0.3s; }");
+		     printw.println(".tab button:hover {background-color: #ddd;}");
+		     printw.println(".tab button.active {background-color: #ccc;}");
+		     printw.println(".tabcontent {display: none; padding: 6px 12px; border: 1px solid #ccc; border-top: none;}");
 		     
 		     printw.close();//cerramos el archivo
 		} catch (Exception e) {
