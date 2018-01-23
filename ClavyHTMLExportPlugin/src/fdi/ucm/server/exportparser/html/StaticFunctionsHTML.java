@@ -145,5 +145,23 @@ public class StaticFunctionsHTML {
 		}
 		return false;
 	}
+	
+	public static boolean isimage(String textopath) {
+		if
+		(
+				//Imagen
+		textopath.toLowerCase().endsWith(".jpg")
+		||
+		textopath.toLowerCase().endsWith(".jpge")	
+		||
+		textopath.toLowerCase().endsWith(".gif")
+		||
+		textopath.toLowerCase().endsWith(".png")
+		)
+			return true;
+		else
+				
+		return false;
+	}
 
 }
