@@ -14,8 +14,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.net.URI;
+//import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -252,9 +254,12 @@ CodigoHTML.append("<body>");
 			String Icon=SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS;
 			
 			try {
+			NameS=URLEncoder.encode(NameS, "UTF-8");
+			
+			
 				URL url2 = new URL(Path);
-				 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
-				 url2 = uri2.toURL();
+//				 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
+//				 url2 = uri2.toURL();
 				
 				saveImage(url2, Icon);
 			} catch (Exception e) {
@@ -267,7 +272,7 @@ CodigoHTML.append("<body>");
 			int heightmini=50;
 			
 			try {
-				BufferedImage bimg = ImageIO.read(new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS));
+				BufferedImage bimg = ImageIO.read(new File(Icon));
 				width= bimg.getWidth();
 				height= bimg.getHeight();
 			} catch (Exception e) {
@@ -281,7 +286,7 @@ CodigoHTML.append("<body>");
 //			if (width=0)
 			
 			
-			CodigoHTML.append("<li> <span class=\"_Type Icon N_1\">Icon:</span> <img class=\"Icon _Value N_1V\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /></li>");
+			CodigoHTML.append("<li> <span class=\"_Type Icon N_1\">Icon:</span> <img class=\"Icon _Value N_1V\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" /></li>");
 			CodigoHTML.append("<li> <span class=\"_Type Description N_2\">Description:</span> <span class=\"Description _Value N_0V\">"+completeDocuments.getDescriptionText()+"</span></li>");
 			for (CompleteElementType completeST : completeGrammar.getSons()) {
 				String Salida = processST(completeST,completeDocuments);
@@ -296,6 +301,8 @@ CodigoHTML.append("<body>");
 		
 	}
 	
+	
+	//TODO 
 	/**
 	 * Salva una imagen dado un destino
 	 * @param imageUrl
@@ -304,19 +311,65 @@ CodigoHTML.append("<body>");
 	 */
 	protected void saveImage(URL imageUrl, String destinationFile) throws IOException {
 
-		URL url = imageUrl;
-		InputStream is = url.openStream();
-		OutputStream os = new FileOutputStream(destinationFile);
+//		URL url = imageUrl;
+//		InputStream is = url.openStream();
+//		OutputStream os = new FileOutputStream(destinationFile);
+//
+//		byte[] b = new byte[2048];
+//		int length;
+//
+//		while ((length = is.read(b)) != -1) {
+//			os.write(b, 0, length);
+//		}
+//
+//		is.close();
+//		os.close();
+		
+		
+		
+		// This will get input data from the server
+	    InputStream inputStream = null;
 
-		byte[] b = new byte[2048];
-		int length;
+	    // This will read the data from the server;
+	    OutputStream outputStream = null;
 
-		while ((length = is.read(b)) != -1) {
-			os.write(b, 0, length);
-		}
+//	        // This will open a socket from client to server
+//	        URL url = new URL(search);
 
-		is.close();
-		os.close();
+	       // This user agent is for if the server wants real humans to visit
+	        String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+
+	       // This socket type will allow to set user_agent
+	        URLConnection con = imageUrl.openConnection();
+
+	        // Setting the user agent
+	        con.setRequestProperty("User-Agent", USER_AGENT);
+
+	        // Requesting input data from server
+	        inputStream = con.getInputStream();
+
+	        // Open local file writer
+	        outputStream = new FileOutputStream(destinationFile);
+
+	        // Limiting byte written to file per loop
+	        byte[] buffer = new byte[2048];
+
+	        // Increments file size
+	        int length;
+
+	        // Looping until server finishes
+	        while ((length = inputStream.read(buffer)) != -1) {
+	            // Writing data
+	            outputStream.write(buffer, 0, length);
+	        }
+
+	     // closing used resources
+	     // The computer will not be able to use the image
+	     // This is a must
+
+	     outputStream.close();
+	     inputStream.close();
+		
 	}
 
 	private String processST(CompleteElementType completeST,
@@ -360,9 +413,12 @@ CodigoHTML.append("<body>");
 					String Icon=SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS;
 					
 					try {
-						URL url2 = new URL(Path);
-						 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
-						 url2 = uri2.toURL();
+						NameS=URLEncoder.encode(NameS, "UTF-8");
+						
+						
+							URL url2 = new URL(Path);
+//						 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
+//						 url2 = uri2.toURL();
 						
 						saveImage(url2, Icon);
 					} catch (Exception e) {
@@ -377,7 +433,7 @@ CodigoHTML.append("<body>");
 					int heightmini=50;
 					
 					try {
-						BufferedImage bimg = ImageIO.read(new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS));
+						BufferedImage bimg = ImageIO.read(new File(Icon));
 						width= bimg.getWidth();
 						height= bimg.getHeight();
 					} catch (Exception e) {
@@ -394,7 +450,7 @@ CodigoHTML.append("<body>");
 							" <img class=\"_ImagenOV "+tipo+"V \" src=\""+
 							completeDocuments.getClavilenoid()+File.separator+NameS+
 							"\" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+
-							";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" /> "+
+							";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" /> "+
 							"<span class=\""+tipo+"V _ClavyID _Value\"></span>"+
 							"<span class=\""+tipo+"V _DescriptionRel _Value\">" +Linked.getDescriptionText()+"</span></li>");
 					}
@@ -413,20 +469,32 @@ String Link = ((CompleteResourceElementURL)E).getValue();
 						String NameS = spliteStri[spliteStri.length-1];
 						String Icon=SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS;
 						
+						
+						try {
+							NameS=URLEncoder.encode(NameS, "UTF-8");
+							
 						File test=new File(Icon);
 						while (test.exists())
 							{
+							
+							
 							NameS = "rep_"+(contadorFiles++)+spliteStri[spliteStri.length-1];
 							
 							Icon=SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS;
 							
+							
+							NameS=URLEncoder.encode(NameS, "UTF-8");
+							
+							
 							test=new File(Icon);
 							}
 						
-						try {
-							URL url2 = new URL(Path);
-							 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
-							 url2 = uri2.toURL();
+						
+							
+							
+								URL url2 = new URL(Path);
+//							 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
+//							 url2 = uri2.toURL();
 							
 							saveImage(url2, Icon);
 						} catch (Exception e) {
@@ -439,7 +507,7 @@ String Link = ((CompleteResourceElementURL)E).getValue();
 						int heightmini=50;
 						
 						try {
-							BufferedImage bimg = ImageIO.read(new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS));
+							BufferedImage bimg = ImageIO.read(new File(Icon));
 							width= bimg.getWidth();
 							height= bimg.getHeight();
 						} catch (Exception e) {
@@ -454,7 +522,7 @@ String Link = ((CompleteResourceElementURL)E).getValue();
 //									"File Linked ->"+
 									"<a class=\"_LinkedRef "+tipo+"V "+tipo+"A  \" href=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" target=\"_blank\">"+
 									" <img class=\"_ImagenFile "+tipo+"V \" class=\"ImagenOV\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\"" +
-											" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" />" +
+											" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" />" +
 											"</a></li>");	
 					
 					}
@@ -486,6 +554,8 @@ String Link = ((CompleteResourceElementURL)E).getValue();
 					String NameS = spliteStri[spliteStri.length-1];
 					String Icon=SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS;
 					
+					try {
+					NameS=URLEncoder.encode(NameS, "UTF-8");
 					
 					File test=new File(Icon);
 					while (test.exists())
@@ -494,14 +564,18 @@ String Link = ((CompleteResourceElementURL)E).getValue();
 						
 						Icon=SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS;
 						
+						
+						NameS=URLEncoder.encode(NameS, "UTF-8");
+						
+						
 						test=new File(Icon);
 						}
 					
 					
-					try {
+					
 						URL url2 = new URL(Path);
-						 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
-						 url2 = uri2.toURL();
+//						 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
+//						 url2 = uri2.toURL();
 						
 						saveImage(url2, Icon);
 					} catch (Exception e) {
@@ -514,7 +588,7 @@ String Link = ((CompleteResourceElementURL)E).getValue();
 					int heightmini=50;
 					
 					try {
-						BufferedImage bimg = ImageIO.read(new File(SOURCE_FOLDER+File.separator+completeDocuments.getClavilenoid()+File.separator+NameS));
+						BufferedImage bimg = ImageIO.read(new File(Icon));
 						width= bimg.getWidth();
 						height= bimg.getHeight();
 					} catch (Exception e) {
@@ -529,7 +603,7 @@ String Link = ((CompleteResourceElementURL)E).getValue();
 //								"File Linked ->"+
 								"<a class=\"_LinkedRef "+tipo+"V "+tipo+"A  \" href=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" target=\"_blank\">"+
 								" <img class=\"_ImagenFile "+tipo+"V \" class=\"ImagenOV\" src=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\"" +
-										" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+Path+"\" />" +
+										" onmouseover=\"this.width="+width+";this.height="+height+";\" onmouseout=\"this.width="+widthmini+";this.height="+heightmini+";\" width=\""+widthmini+"\" height=\""+heightmini+"\" alt=\""+completeDocuments.getClavilenoid()+File.separator+NameS+"\" />" +
 										"</a></li>");				
 
 					}
