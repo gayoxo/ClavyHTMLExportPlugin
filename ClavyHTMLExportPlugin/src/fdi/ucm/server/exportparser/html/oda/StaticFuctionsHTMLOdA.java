@@ -619,7 +619,7 @@ public class StaticFuctionsHTMLOdA {
 		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
 		for (CompleteOperationalValueType show : Shows) {
 			
-			if (show.getView().equals(StaticNamesHTMLOdA.PRESNTACION))
+			if (show.getView().equals(StaticNamesHTMLOdA.ODA))
 			{
 					if (show.getName().equals(StaticNamesHTMLOdA.OdaID))
 						try {

@@ -5,6 +5,8 @@ package fdi.ucm.server.exportparser.html.oda;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URL;
 import java.text.DateFormat;
@@ -55,7 +57,10 @@ public class HTMLprocessOdA extends HTMLprocess {
 	 * @param arrayList 
 	 */
 	public HTMLprocessOdA(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL, ArrayList<Long> administradorList, boolean administrador, ArrayList<Long> listaStructura, String Textot) {
+			
 		super(listaDeDocumentos,salvar,sOURCE_FOLDER,cL,Textot);
+		
+		
 		
 		AdministradorListaDocumentos=new HashSet<Long>();
 		for (Long long1 : administradorList) {
@@ -71,6 +76,17 @@ public class HTMLprocessOdA extends HTMLprocess {
 		}
 
 		
+	}
+	
+	@Override
+	protected ArrayList<Long> insertEmptyList(CompleteCollection salvar2) {
+		ArrayList<Long> Salida = new ArrayList<Long>();
+		for (CompleteDocuments Docu : salvar2.getEstructuras()) {
+			Long IDOVL = getIDOVStrict(Docu);
+			if (IDOVL!=null)
+				Salida.add(getIDOVStrict(Docu));
+		}
+		return Salida;
 	}
 	
 	@Override
@@ -118,6 +134,29 @@ public class HTMLprocessOdA extends HTMLprocess {
 		return IDOV;
 		
 	}
+	
+	
+	private Long getIDOVStrict(CompleteDocuments completeDocuments) {
+		Long IDOV=null;
+		for (CompleteElement elemetpos : completeDocuments.getDescription()) {
+			if (elemetpos instanceof CompleteTextElement&&elemetpos.getHastype() instanceof CompleteTextElementType&&StaticFuctionsHTMLOdA.isIDOV((CompleteTextElementType)elemetpos.getHastype()))
+				{
+				String IDOVS=((CompleteTextElement) elemetpos).getValue();
+				try {
+					
+					IDOV=Long.parseLong(IDOVS);
+					return IDOV;
+				} catch (Exception e) {
+					System.err.println("error de un entero que es "+IDOVS);
+					e.printStackTrace();
+				
+				}
+				}
+		}
+		return IDOV;
+		
+	}
+	
 
 	@Override
 	protected ArrayList<CompleteGrammar> ProcesaGramaticas(
@@ -820,6 +859,48 @@ public class HTMLprocessOdA extends HTMLprocess {
 		System.out.println(testLink("http://192.168.1.1:266/Oda"));
 		System.out.println(!("http://localhost/Oda").endsWith("/"));
 		System.out.println(!("http://localhost/oda-ref/").endsWith("/"));
+		
+		String message="Exception .clavy-> Params Null ";
+		try {
+
+				
+				
+				String fileName = "test.clavy";
+				 System.out.println(fileName);
+				 
+
+				 File file = new File(fileName);
+				 FileInputStream fis = new FileInputStream(file);
+				 ObjectInputStream ois = new ObjectInputStream(fis);
+				 CompleteCollection object = (CompleteCollection) ois.readObject();
+				 
+				 
+				 try {
+					 ois.close();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				 try {
+					 fis.close();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				
+				 String S="/TMP/"+System.nanoTime();
+				File F=new File(S);
+				F.mkdirs();
+				HTMLprocessOdA HH = new HTMLprocessOdA(new ArrayList<Long>(), object, S, new CompleteLogAndUpdates(), new ArrayList<Long>(), true, new ArrayList<Long>(), "Hola");
+				 HH.preocess();
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println(message);
+			throw new RuntimeException(message);
+		}
+		
 	}
 	
 	

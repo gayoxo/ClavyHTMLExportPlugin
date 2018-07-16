@@ -66,8 +66,6 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 			
 			CompleteLogAndUpdates CL=new CompleteLogAndUpdates();
 			
-			if (!ListaDeDocumentos.isEmpty())
-			{
 			
 			Path=PathTemporalFiles;
 			SOURCE_FOLDER=Path+"HTML"+File.separator;
@@ -95,12 +93,7 @@ public class HTMLSaveCollectionOdA extends SaveCollection {
 			}
 
 			return CL;
-			}
-			else 
-			{
-				CL.getLogLines().add("Error en lista, numero de documentos vacio");
-				return CL;
-			}
+			
 
 		} catch (CompleteImportRuntimeException e) {
 			System.err.println("Exception HTML " +e.getGENERIC_ERROR());

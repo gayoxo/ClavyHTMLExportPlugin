@@ -6,10 +6,12 @@ package fdi.ucm.server.exportparser.html;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -66,12 +68,11 @@ public class HTMLprocess {
 	public HTMLprocess(ArrayList<Long> listaDeDocumentos, CompleteCollection salvar, String sOURCE_FOLDER, CompleteLogAndUpdates cL, String textoIn) {
 		ListaDeDocumentosT=new ArrayList<List<Long>>();
 		
+		
 		if (listaDeDocumentos.isEmpty())
-			{
-			for (CompleteDocuments Docu : salvar.getEstructuras()) {
-				listaDeDocumentos.add(Docu.getClavilenoid());
-			}
-			}
+			listaDeDocumentos=insertEmptyList(salvar);
+			
+			
 		
 		TextoTitle=textoIn;
 		
@@ -94,6 +95,14 @@ public class HTMLprocess {
 		CL=cL;
 		
 		NameCSS=new HashMap<String,CompleteElementType>();
+	}
+
+	protected ArrayList<Long> insertEmptyList(CompleteCollection salvar2) {
+		ArrayList<Long> Salida = new ArrayList<Long>();
+		for (CompleteDocuments Docu : salvar2.getEstructuras()) {
+			Salida.add(Docu.getClavilenoid());
+		}
+		return Salida;
 	}
 
 	public void preocess() {
@@ -593,6 +602,7 @@ String Link = ((CompleteResourceElementURL)E).getValue();
 						height= bimg.getHeight();
 					} catch (Exception e) {
 						e.printStackTrace();
+						System.err.println(Icon);
 					}
 					
 					
@@ -755,4 +765,48 @@ return null;
 		return Base+i;
 	}
 
+	
+	public static void main(String[] args) {
+		String message="Exception .clavy-> Params Null ";
+		try {
+
+			
+			
+			String fileName = "test.clavy";
+			 System.out.println(fileName);
+			 
+
+			 File file = new File(fileName);
+			 FileInputStream fis = new FileInputStream(file);
+			 ObjectInputStream ois = new ObjectInputStream(fis);
+			 CompleteCollection object = (CompleteCollection) ois.readObject();
+			 
+			 
+			 try {
+				 ois.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+			 try {
+				 fis.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+
+
+			 
+			 
+			HTMLprocess HH = new HTMLprocess(new ArrayList<Long>(), object, "/TMP/"+System.nanoTime(), new CompleteLogAndUpdates(), "Hola");
+			 HH.preocess();
+
+
+	} catch (Exception e) {
+		e.printStackTrace();
+		System.err.println(message);
+		throw new RuntimeException(message);
+	}
+	}
+	
 }
